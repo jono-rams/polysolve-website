@@ -8,8 +8,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Balancer } from "react-wrap-balancer";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { HelpCircle } from "lucide-react";
 
 type PyodideState = "loading" | "ready" | "error";
+
+type GaOptionKey = "min_range" | "max_range" | "num_of_generations" | "sample_size" | "data_size" | "mutation_percentage";
 
 type PolynomialInputProps = {
   id: string;
@@ -56,13 +61,22 @@ export default function DemoPage() {
   const [formattedFunc1, setFormattedFunc1] = useState("");
   const [formattedFunc2, setFormattedFunc2] = useState("");
 
+  const [gaOptions, setGaOptions] = useState({
+    min_range: "-100.0",
+    max_range: "100.0",
+    num_of_generations: "10",
+    sample_size: "1000",
+    data_size: "100000",
+    mutation_percentage: "0.01",
+  });
+
   const workerRef = useRef<Worker | null>(null);
 
   useEffect(() => {
     workerRef.current = new Worker('/pyodide-worker.js');
     const onMessage = (event: MessageEvent) => {
       const { type, requestType, payload, id } = event.data;
-      
+
       switch (type) {
         case 'ready':
           setPyodideState('ready');
@@ -76,7 +90,7 @@ export default function DemoPage() {
             if (id === 2) setFormattedFunc2(payload);
             return;
           }
-          
+
           let resultPrefix = "Result:";
           switch (requestType) {
             case 'solve': resultPrefix = "Approximate Roots:"; break;
@@ -91,8 +105,8 @@ export default function DemoPage() {
           break;
         case 'error':
           setOutput(`Error: ${payload}`);
-          if(id === 1) setFormattedFunc1("");
-          if(id === 2) setFormattedFunc2("");
+          if (id === 1) setFormattedFunc1("");
+          if (id === 2) setFormattedFunc2("");
           setIsCalculating(false);
           break;
       }
@@ -110,7 +124,7 @@ export default function DemoPage() {
     }, 400);
     return () => clearTimeout(handler);
   }, [coeffs1, pyodideState]);
-  
+
   // Debounced effect for the second coefficient input
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -121,26 +135,60 @@ export default function DemoPage() {
     return () => clearTimeout(handler);
   }, [coeffs2, pyodideState]);
 
+  // Generic handler for GA option input changes
+  const handleGaOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setGaOptions(prev => ({
+      ...prev,
+      [name as GaOptionKey]: value
+    }));
+  };
+
+  // --- CALCULATION HANDLER ---
   const runCalculation = (type: string) => {
     if (!workerRef.current) return;
     setIsCalculating(true);
     setOutput("Calculating...");
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let payload: any = { coeffs: coeffs1 };
+    let payload: any = {};
     switch (type) {
-      case 'evaluate': payload.xVal = xValue; break;
-      case 'nth_derivative': payload.n = nValue; break;
+      case 'solve':
+        const optionsWithNumbers = Object.fromEntries(
+          Object.entries(gaOptions).map(([key, value]) => [
+            key,
+            // Use a fallback of 0 if the string is empty or invalid
+            parseFloat(value) || 0
+          ])
+        );
+
+        console.log("Sending GA Options to worker:", optionsWithNumbers);
+
+        payload = { coeffs: coeffs1, options: optionsWithNumbers };
+        break;
+      case 'evaluate': payload = { coeffs: coeffs1, xVal: xValue }; break;
+      case 'nth_derivative': payload = { coeffs: coeffs1, n: nValue }; break;
       case 'add':
       case 'multiply':
         payload = { coeffs1: coeffs1, coeffs2: coeffs2 };
         break;
+      case 'derivative':
+        payload = { coeffs: coeffs1 };
+        break;
     }
-    
+
     workerRef.current.postMessage({ type, payload });
   };
 
   const isButtonDisabled = pyodideState !== "ready" || isCalculating;
+  const gaOptionsList: { name: GaOptionKey; label: string; description: string; }[] = [
+    { name: 'min_range', label: 'Min Range', description: 'The minimum value for the initial random solutions.' },
+    { name: 'max_range', label: 'Max Range', description: 'The maximum value for the initial random solutions.' },
+    { name: 'num_of_generations', label: 'Generations', description: 'The number of iterations the algorithm will run.' },
+    { name: 'sample_size', label: 'Sample Size', description: 'The number of top solutions to keep and return.' },
+    { name: 'data_size', label: 'Data Size', description: 'The total number of solutions generated in each generation.' },
+    { name: 'mutation_percentage', label: 'Mutation %', description: 'The amount by which top solutions are mutated each generation.' },
+  ];
 
   // --- JSX RENDER ---
   return (
@@ -166,6 +214,29 @@ export default function DemoPage() {
 
             <TabsContent value="roots" className="mt-4 space-y-4">
               <PolynomialInput id="coeffs-roots" label="Polynomial Coefficients" value={coeffs1} onChange={(e) => setCoeffs1(e.target.value)} disabled={isButtonDisabled} formattedValue={formattedFunc1} />
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="item-1">
+                  <AccordionTrigger>Advanced Genetic Algorithm Options</AccordionTrigger>
+                  <AccordionContent>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                      {gaOptionsList.map(opt => (
+                        <div key={opt.name} className="space-y-2">
+                          <Label htmlFor={opt.name} className="flex items-center">
+                            {opt.label}
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild><HelpCircle className="h-4 w-4 ml-2 text-muted-foreground" /></TooltipTrigger>
+                                <TooltipContent><p>{opt.description}</p></TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </Label>
+                          <Input id={opt.name} name={opt.name} type="number" value={gaOptions[opt.name]} onChange={handleGaOptionChange} disabled={isButtonDisabled} />
+                        </div>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
               <Button onClick={() => runCalculation('solve')} disabled={isButtonDisabled}>{isCalculating ? 'Calculating...' : 'Find Roots'}</Button>
             </TabsContent>
 
@@ -179,29 +250,29 @@ export default function DemoPage() {
             </TabsContent>
 
             <TabsContent value="derivative" className="mt-4 space-y-4">
-               <PolynomialInput id="coeffs-deriv" label="Polynomial Coefficients" value={coeffs1} onChange={(e) => setCoeffs1(e.target.value)} disabled={isButtonDisabled} formattedValue={formattedFunc1} />
-               <Button onClick={() => runCalculation('derivative')} disabled={isButtonDisabled}>{isCalculating ? 'Calculating...' : 'Calculate Derivative'}</Button>
+              <PolynomialInput id="coeffs-deriv" label="Polynomial Coefficients" value={coeffs1} onChange={(e) => setCoeffs1(e.target.value)} disabled={isButtonDisabled} formattedValue={formattedFunc1} />
+              <Button onClick={() => runCalculation('derivative')} disabled={isButtonDisabled}>{isCalculating ? 'Calculating...' : 'Calculate Derivative'}</Button>
             </TabsContent>
-            
+
             <TabsContent value="nth_derivative" className="mt-4 space-y-4">
-               <PolynomialInput id="coeffs-nth" label="Polynomial Coefficients" value={coeffs1} onChange={(e) => setCoeffs1(e.target.value)} disabled={isButtonDisabled} formattedValue={formattedFunc1} />
-               <div className="space-y-2">
-                  <Label htmlFor="n-val">Order &apos;n&apos;</Label>
-                  <Input id="n-val" type="number" value={nValue} onChange={(e) => setNValue(e.target.value)} disabled={isButtonDisabled} />
+              <PolynomialInput id="coeffs-nth" label="Polynomial Coefficients" value={coeffs1} onChange={(e) => setCoeffs1(e.target.value)} disabled={isButtonDisabled} formattedValue={formattedFunc1} />
+              <div className="space-y-2">
+                <Label htmlFor="n-val">Order &apos;n&apos;</Label>
+                <Input id="n-val" type="number" value={nValue} onChange={(e) => setNValue(e.target.value)} disabled={isButtonDisabled} />
               </div>
               <Button onClick={() => runCalculation('nth_derivative')} disabled={isButtonDisabled}>{isCalculating ? 'Calculating...' : 'Calculate Nth Derivative'}</Button>
             </TabsContent>
 
             <TabsContent value="add" className="mt-4 space-y-4">
-               <PolynomialInput id="coeffs-add1" label="First Polynomial (f1)" value={coeffs1} onChange={(e) => setCoeffs1(e.target.value)} disabled={isButtonDisabled} formattedValue={formattedFunc1} />
-               <PolynomialInput id="coeffs-add2" label="Second Polynomial (f2)" value={coeffs2} onChange={(e) => setCoeffs2(e.target.value)} disabled={isButtonDisabled} placeholder="e.g., 1, 1" formattedValue={formattedFunc2} />
-               <Button onClick={() => runCalculation('add')} disabled={isButtonDisabled}>{isCalculating ? 'Calculating...' : 'Add f1 + f2'}</Button>
+              <PolynomialInput id="coeffs-add1" label="First Polynomial (f1)" value={coeffs1} onChange={(e) => setCoeffs1(e.target.value)} disabled={isButtonDisabled} formattedValue={formattedFunc1} />
+              <PolynomialInput id="coeffs-add2" label="Second Polynomial (f2)" value={coeffs2} onChange={(e) => setCoeffs2(e.target.value)} disabled={isButtonDisabled} placeholder="e.g., 1, 1" formattedValue={formattedFunc2} />
+              <Button onClick={() => runCalculation('add')} disabled={isButtonDisabled}>{isCalculating ? 'Calculating...' : 'Add f1 + f2'}</Button>
             </TabsContent>
 
             <TabsContent value="multiply" className="mt-4 space-y-4">
-               <PolynomialInput id="coeffs-mul1" label="First Polynomial (f1)" value={coeffs1} onChange={(e) => setCoeffs1(e.target.value)} disabled={isButtonDisabled} formattedValue={formattedFunc1} />
-               <PolynomialInput id="coeffs-mul2" label="Second Polynomial (f2)" value={coeffs2} onChange={(e) => setCoeffs2(e.target.value)} disabled={isButtonDisabled} placeholder="e.g., 1, 1" formattedValue={formattedFunc2} />
-               <Button onClick={() => runCalculation('multiply')} disabled={isButtonDisabled}>{isCalculating ? 'Calculating...' : 'Multiply f1 * f2'}</Button>
+              <PolynomialInput id="coeffs-mul1" label="First Polynomial (f1)" value={coeffs1} onChange={(e) => setCoeffs1(e.target.value)} disabled={isButtonDisabled} formattedValue={formattedFunc1} />
+              <PolynomialInput id="coeffs-mul2" label="Second Polynomial (f2)" value={coeffs2} onChange={(e) => setCoeffs2(e.target.value)} disabled={isButtonDisabled} placeholder="e.g., 1, 1" formattedValue={formattedFunc2} />
+              <Button onClick={() => runCalculation('multiply')} disabled={isButtonDisabled}>{isCalculating ? 'Calculating...' : 'Multiply f1 * f2'}</Button>
             </TabsContent>
           </Tabs>
 

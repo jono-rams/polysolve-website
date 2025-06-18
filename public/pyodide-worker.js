@@ -44,18 +44,18 @@ self.onmessage = async (event) => {
         result = createFunction(payload);
         break;
       case 'solve':
-        const func_to_solve = createFunction(coeffs);
+        const func_to_solve = createFunction(payload.coeffs);
         self.pyodide.globals.set('func_to_solve', func_to_solve);
+        self.pyodide.globals.set('ga_opts_js', payload.options);
 
         result = await self.pyodide.runPythonAsync(`
           from polysolve import GA_Options
-          
-          # The user's requested GA options
-          ga_opts = GA_Options(
-              num_of_generations=25, 
-              data_size=50000, 
-              sample_size=20
-          )
+
+          # Convert the JavaScript options object to a Python dictionary
+          ga_opts_dict = ga_opts_js.to_py()
+
+          # Create the GA_Options instance by unpacking the dictionary
+          ga_opts = GA_Options(**ga_opts_dict)
           
           # Call the method with the options
           roots = func_to_solve.get_real_roots(options=ga_opts)
