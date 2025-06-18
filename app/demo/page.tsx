@@ -108,6 +108,7 @@ export default function DemoPage() {
     setIsCalculating(true);
     setOutput("Calculating...");
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let payload: any = { coeffs: coeffs1 };
     switch (type) {
       case 'evaluate': payload.xVal = xValue; break;
@@ -167,7 +168,7 @@ export default function DemoPage() {
             <TabsContent value="nth_derivative" className="mt-4 space-y-4">
                <PolynomialInput id="coeffs-nth" label="Polynomial Coefficients" value={coeffs1} onChange={(e) => setCoeffs1(e.target.value)} disabled={isButtonDisabled} formattedValue={formattedFunc1} />
                <div className="space-y-2">
-                  <Label htmlFor="n-val">Order 'n'</Label>
+                  <Label htmlFor="n-val">Order &apos;n&apos;</Label>
                   <Input id="n-val" type="number" value={nValue} onChange={(e) => setNValue(e.target.value)} disabled={isButtonDisabled} />
               </div>
               <Button onClick={() => runCalculation('nth_derivative')} disabled={isButtonDisabled}>{isCalculating ? 'Calculating...' : 'Calculate Nth Derivative'}</Button>

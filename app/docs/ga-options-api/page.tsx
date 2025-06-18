@@ -35,7 +35,7 @@ roots = f.get_real_roots(options=custom_options)`}
           <ul>
             <li><strong>min_range / max_range (float):</strong> The lower and upper bounds for the initial random search space. Default: -100.0 / 100.0.</li>
             <li><strong>num_of_generations (int):</strong> The number of iterations the algorithm will run. More generations can lead to more accurate results. Default: 10.</li>
-            <li><strong>data_size (int):</strong> The total number of "solutions" generated in each generation. A larger size increases the chance of finding roots but is more computationally expensive. Default: 100000.</li>
+            <li><strong>data_size (int):</strong> The total number of &quot;solutions&quot; generated in each generation. A larger size increases the chance of finding roots but is more computationally expensive. Default: 100000.</li>
             <li><strong>sample_size (int):</strong> The number of top-performing solutions from one generation that are used to create the next. Default: 1000.</li>
             <li><strong>mutation_percentage (float):</strong> The small, random amount by which the top solutions are altered each generation to explore the nearby search space. Default: 0.01 (1%).</li>
           </ul>

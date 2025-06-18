@@ -20,7 +20,7 @@ export default function InstallationPage() {
           
           <h3 className="font-semibold">CUDA Accelerated Installation</h3>
           <p>To enable GPU acceleration, you need a compatible NVIDIA GPU with the CUDA toolkit installed, as well as the <code>cupy</code> library. You can install PolySolve with the CUDA extras, which will automatically handle the <code>cupy</code> dependency:</p>
-          <CodeBlock>pip install "polysolve[cuda]"</CodeBlock>
+          <CodeBlock>pip install &quot;polysolve[cuda]&quot;</CodeBlock>
         </CardContent>
       </Card>
       <DocsPagination />

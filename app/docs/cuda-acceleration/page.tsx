@@ -14,7 +14,7 @@ export default function CudaPage() {
           <CardTitle>7. Advanced: CUDA Acceleration</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p>One of PolySolve's most powerful features is its ability to offload the genetic algorithm's fitness calculations to a compatible NVIDIA GPU. This can result in dramatic speedups when using a large <code>data_size</code> in your <code>GA_Options</code>.</p>
+          <p>One of PolySolve&apos;s most powerful features is its ability to offload the genetic algorithm&apos;s fitness calculations to a compatible NVIDIA GPU. This can result in dramatic speedups when using a large <code>data_size</code> in your <code>GA_Options</code>.</p>
           <p>This feature is ideal for modern NVIDIA GPUs (like the RTX 30 and 40 series). To use it, simply pass the <code>use_cuda=True</code> flag to the solver method.</p>
           <CodeBlock>
 {`# A high-degree polynomial that would be slow to solve on CPU
