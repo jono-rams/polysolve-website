@@ -65,8 +65,8 @@ export default function DemoPage() {
     min_range: "-100.0",
     max_range: "100.0",
     num_of_generations: "10",
-    sample_size: "1000",
-    data_size: "100000",
+    sample_size: "10",
+    data_size: "10000",
     mutation_percentage: "0.01",
   });
 
