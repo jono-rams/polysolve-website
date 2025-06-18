@@ -11,8 +11,26 @@ import { Balancer } from "react-wrap-balancer";
 
 type PyodideState = "loading" | "ready" | "error";
 
+type PolynomialInputProps = {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled: boolean;
+  placeholder?: string;
+  formattedValue: string;
+};
+
 // Reusable input component for polynomials
-const PolynomialInput = ({ id, label, value, onChange, disabled, placeholder = "e.g., 2, -3, -5", formattedValue }) => (
+const PolynomialInput = ({
+  id,
+  label,
+  value,
+  onChange,
+  disabled,
+  placeholder = "e.g., 2, -3, -5",
+  formattedValue
+}: PolynomialInputProps) => (
   <div className="space-y-2">
     <Label htmlFor={id}>{label}</Label>
     <Input id={id} value={value} onChange={onChange} disabled={disabled} placeholder={placeholder} />
