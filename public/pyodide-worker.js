@@ -22,7 +22,7 @@ const createFunction = (coeffsStr) => {
   return pyodide.runPython(
     `
 import polysolve
-coeffs_list = [float(c.strip()) for c in coeffs_str.split(',')]
+coeffs_list = [float(c.strip()) for c in coeffs_str.split(',') if c.strip()]
 f = polysolve.Function(len(coeffs_list) - 1)
 f.set_coeffs(coeffs_list)
 f
@@ -39,10 +39,18 @@ self.onmessage = async (event) => {
     
     const coeffs = type === 'add' || type === 'multiply' ? payload.coeffs1 : payload.coeffs;
 
+    if (type === 'format') {
+    try {
+      const result = createFunction(payload);
+      self.postMessage({ type: 'result', requestType: 'format', id: id, payload: String(result) });
+    } catch (error) {
+      // If formatting fails (e.g., input is "-"), just do nothing.
+      // Don't send an error message for an incomplete preview.
+    }
+    return; // Stop execution for format requests here.
+  }
+
     switch (type) {
-      case 'format':
-        result = createFunction(payload);
-        break;
       case 'solve':
         const func_to_solve = createFunction(payload.coeffs);
         self.pyodide.globals.set('func_to_solve', func_to_solve);
