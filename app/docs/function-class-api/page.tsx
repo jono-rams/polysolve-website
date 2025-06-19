@@ -1,9 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DocsPagination } from "@/components/DocsPagination";
-
-const CodeBlock = ({ children }: { children: React.ReactNode }) => (
-  <pre className="bg-secondary p-4 rounded-md overflow-x-auto"><code className="font-mono text-sm">{children}</code></pre>
-);
+import CodeBlock from "@/components/CodeBlock";
 
 export default function FunctionApiPage() {
   return (
