@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Bot, Cpu, Gauge, Zap } from "lucide-react";
 
@@ -29,7 +30,10 @@ export default function Home() {
     <div className="space-y-12">
       {/* Hero Section */}
       <section className="text-center">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tighter">
+        <div style={{display: "flex", justifyContent: "center"}}>
+          <Image src="/PolySolve-Logo.png" alt='PolySolve Logo' width={256} height={256} className='h-auto w-auto' ></Image>
+        </div>
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tighter my-3 py-2">
           The Modern Python Polynomial Solver
         </h1>
         <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
