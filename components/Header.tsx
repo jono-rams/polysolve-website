@@ -59,7 +59,7 @@ const Header = () => {
                 <SheetHeader className="sr-only">
                   <SheetTitle>Main Menu</SheetTitle>
                 </SheetHeader>
-                <div className="mt-8 flex flex-col space-y-4">
+                <div className="mt-8 flex flex-col space-y-4 pl-4">
                   <Link
                     href="/docs"
                     className="text-lg font-medium text-foreground"
