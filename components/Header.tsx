@@ -16,8 +16,8 @@ const Header = () => {
 
         {/* Group 1: Logo */}
         <div className="flex items-center">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
-            <Image src="/logo.png" alt='PolySolve Logo' width={30} height={30} className='h-6 w-6' ></Image>
+          <Link href="/" className="mr-6 flex items-center">
+            <Image src="/logo.png" alt='PolySolve Logo' width={64} height={64} className='h-auto w-auto' ></Image>
             <span className="font-bold text-lg">PolySolve</span>
           </Link>
 
