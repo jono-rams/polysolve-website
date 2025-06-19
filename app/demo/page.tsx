@@ -1,4 +1,3 @@
-// app/demo/page.tsx
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -193,7 +192,7 @@ export default function DemoPage() {
   // --- JSX RENDER ---
   return (
     <div className="space-y-8">
-      <h1 className="text-4xl font-bold">Live Demo</h1>
+      <h1 className="text-3xl md:text-4xl font-bold">Live Demo</h1>
       <Card>
         <CardHeader>
           <CardTitle>PolySolve Playground</CardTitle>
@@ -203,7 +202,7 @@ export default function DemoPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <Tabs defaultValue="roots" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 md:grid-cols-6">
+            <TabsList className="grid w-full h-auto grid-cols-2 sm:grid-cols-3 md:h-10 md:grid-cols-6">
               <TabsTrigger value="roots">Find Roots</TabsTrigger>
               <TabsTrigger value="evaluate">Evaluate at x</TabsTrigger>
               <TabsTrigger value="derivative">Derivative</TabsTrigger>
