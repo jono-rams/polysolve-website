@@ -22,10 +22,10 @@ export default function GaOptionsPage() {
 custom_options = GA_Options(
     min_range=-100.0,
     max_range=100.0,
-    num_of_generations=50,
+    num_of_generations=10,
     data_size=500000,
     sample_size=100,
-    mutation_percentage=0.05
+    mutation_percentage=0.01
 )
 
 f = Function(5)
