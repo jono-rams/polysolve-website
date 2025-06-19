@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { Code, Github, Menu, Package } from 'lucide-react';
+import { Github, Menu, Package } from 'lucide-react';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -16,7 +17,7 @@ const Header = () => {
         {/* Group 1: Logo */}
         <div className="flex items-center">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <Code className="h-6 w-6" />
+            <Image src="/logo.png" alt='PolySolve Logo' width={30} height={30} className='h-6 w-6' ></Image>
             <span className="font-bold text-lg">PolySolve</span>
           </Link>
 
