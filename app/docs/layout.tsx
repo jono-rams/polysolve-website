@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -38,6 +38,11 @@ export default function DocsLayout({
   children: React.ReactNode;
 }) {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setIsSheetOpen(false);
+  }, [pathname]);
 
   return (
     // On medium screens and up, use a 2-column grid. On mobile, it's a single column.
