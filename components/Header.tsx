@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Code, Github, Menu, Package } from 'lucide-react';
 
 const Header = () => {
@@ -55,6 +55,9 @@ const Header = () => {
                 </Button>
               </SheetTrigger>
               <SheetContent side='right'>
+                <SheetHeader className="sr-only">
+                  <SheetTitle>Main Menu</SheetTitle>
+                </SheetHeader>
                 <div className="mt-8 flex flex-col space-y-4">
                   <Link
                     href="/docs"

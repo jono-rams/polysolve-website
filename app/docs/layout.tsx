@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { docsSections } from "@/lib/docs-navigation";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Menu } from "lucide-react";
 
 // The navigation links component, which we'll use in both mobile and desktop.
@@ -62,6 +62,9 @@ export default function DocsLayout({
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-[280px]">
+              <SheetHeader className="sr-only">
+                  <SheetTitle>Documentation Menu</SheetTitle>
+                </SheetHeader>
               <div className="pt-8">
                 <DocsSidebarNav />
               </div>
