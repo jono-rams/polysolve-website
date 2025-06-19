@@ -4,6 +4,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { Analytics } from '@vercel/analytics/next';
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,6 +36,9 @@ export default function RootLayout({
             <Footer />
           </div>
         </ThemeProvider>
+
+        <Analytics />
+        {process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics />}
       </body>
     </html>
   );
