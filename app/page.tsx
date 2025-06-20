@@ -42,7 +42,7 @@ export default function Home() {
         <div className="mt-8">
           <Card className="max-w-md mx-auto bg-secondary">
             <CardContent className="p-4">
-              <code className="font-mono text-sm">
+              <code className="font-mono text-xl">
                 <span className="text-green-400">$</span> pip install polysolve
               </code>
             </CardContent>
