@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Analytics } from '@vercel/analytics/next';
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -38,7 +39,9 @@ export default function RootLayout({
         </ThemeProvider>
 
         <Analytics />
-        {process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics />}
+        <Suspense fallback={null}>
+          {process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics />}
+        </Suspense>
       </body>
     </html>
   );
