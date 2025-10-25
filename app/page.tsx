@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Bot, Cpu, Gauge, Zap } from "lucide-react";
 
-import { Highlight, themes } from 'prism-react-renderer';
+import CodeBlock from "@/components/CodeBlock";
 
 export default function Home() {
   const features = [
@@ -29,19 +29,6 @@ export default function Home() {
       description: "Use natural Python operators (+, -, *) to perform polynomial calculus and arithmetic effortlessly.",
     },
   ];
-
-  const quickStartCode = `
-import polysolve
-
-# Create an object representing f(x) = 2x^2 - 3x - 5
-f1 = polysolve.function(2)
-f1.set_coeffs([2, -3, -5])
-
-# Find the approximate real roots
-roots = f1.get_real_roots()
-print(roots)
-# Expected output: [-1.0001, 2.5003]
-  `;
 
   return (
     <div className="space-y-16 md:space-y-20">
@@ -71,32 +58,20 @@ print(roots)
           Get Started in 30 Seconds
         </h2>
         
-        <Highlight
-          theme={themes.vsDark}
-          code={quickStartCode.trim()}
-          language="python"
-        >
-          {({ className, style, tokens, getLineProps, getTokenProps }) => (
-            <pre 
-              style={{
-                ...style,
-                padding: '1.25rem 1.5rem', 
-                fontSize: '0.9rem',
-                borderRadius: '0.75rem',
-                overflowX: 'auto',
-              }}
-              className="text-base"
-            >
-              {tokens.map((line, i) => (
-                <div key={i} {...getLineProps({ line })}>
-                  {line.map((token, key) => (
-                    <span key={key} {...getTokenProps({ token })} />
-                  ))}
-                </div>
-              ))}
-            </pre>
-          )}
-        </Highlight>
+        <CodeBlock language='python'>
+          {`
+import polysolve
+
+# Create an object representing f(x) = 2x^2 - 3x - 5
+f1 = polysolve.function(2)
+f1.set_coeffs([2, -3, -5])
+
+# Find the approximate real roots
+roots = f1.get_real_roots()
+print(roots)
+# Expected output: [-1.0001, 2.5003]
+  `}
+        </CodeBlock>
       </section>
 
       <section className="text-center">
