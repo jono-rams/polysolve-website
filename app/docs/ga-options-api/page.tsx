@@ -54,7 +54,7 @@ roots = f.get_real_roots(options=custom_options)`}
             <li>
               <p><strong><code>data_size</code></strong></p>
               <p className="!mt-1 ml-4 text-base">
-                The total number of "solutions" generated in each generation. A larger size increases the chance of finding roots but is more computationally expensive.
+                The total number of &quot;solutions&quot; generated in each generation. A larger size increases the chance of finding roots but is more computationally expensive.
               </p>
               <p className="!mt-2 ml-4 text-sm text-muted-foreground">
                 <strong>Type:</strong> <code>int</code> | <strong>Default:</strong> <code>100000</code>
