@@ -12,7 +12,7 @@ export default function QuickStartPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <p>Here’s a simple example of creating a quadratic function and finding its roots:</p>
-          <CodeBlock>
+          <CodeBlock language="python">
 {`import polysolve
 
 # Create an object representing a degree-2 polynomial (a quadratic)

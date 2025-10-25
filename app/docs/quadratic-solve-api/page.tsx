@@ -12,7 +12,7 @@ export default function QuadraticSolvePage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <p>For the special case of degree-2 polynomials (quadratics), PolySolve provides a direct, analytical solver using the quadratic formula. This is much faster and more precise than the genetic algorithm for this specific case.</p>
-          <CodeBlock>
+          <CodeBlock language="python">
 {`from polysolve import Function, quadratic_solve
 
 # f(x) = x² - x - 6

@@ -12,7 +12,7 @@ export default function GaOptionsPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <p>The <code>GA_Options</code> dataclass allows you to fine-tune the genetic algorithm used in the <code>solve_x</code> and <code>get_real_roots</code> methods.</p>
-          <CodeBlock>
+          <CodeBlock language="python">
 {`from polysolve import Function, GA_Options
 
 # Configure a more exhaustive search

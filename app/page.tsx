@@ -1,6 +1,10 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Bot, Cpu, Gauge, Zap } from "lucide-react";
+
+import { Highlight, themes } from 'prism-react-renderer';
 
 export default function Home() {
   const features = [
@@ -26,9 +30,21 @@ export default function Home() {
     },
   ];
 
+  const quickStartCode = `
+import polysolve
+
+# Create an object representing f(x) = 2x^2 - 3x - 5
+f1 = polysolve.function(2)
+f1.set_coeffs([2, -3, -5])
+
+# Find the approximate real roots
+roots = f1.get_real_roots()
+print(roots)
+# Expected output: [-1.0001, 2.5003]
+  `;
+
   return (
-    <div className="space-y-12">
-      {/* Hero Section */}
+    <div className="space-y-16 md:space-y-20">
       <section className="text-center">
         <div style={{display: "flex", justifyContent: "center"}}>
           <Image src="/PolySolve-Logo.png" alt='PolySolve Logo' width={256} height={256} className='h-auto w-auto' ></Image>
@@ -42,7 +58,7 @@ export default function Home() {
         <div className="mt-8">
           <Card className="max-w-md mx-auto bg-secondary">
             <CardContent className="p-4">
-              <code className="font-mono text-xl">
+              <code className="font-mono text-lg md:text-xl">
                 <span className="text-green-400">$</span> pip install polysolve
               </code>
             </CardContent>
@@ -50,7 +66,50 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Section */}
+      <section>
+        <h2 className="text-3xl font-bold tracking-tighter text-center mb-6">
+          Get Started in 30 Seconds
+        </h2>
+        
+        <Highlight
+          theme={themes.vsDark}
+          code={quickStartCode.trim()}
+          language="python"
+        >
+          {({ className, style, tokens, getLineProps, getTokenProps }) => (
+            <pre 
+              style={{
+                ...style,
+                padding: '1.25rem 1.5rem', 
+                fontSize: '0.9rem',
+                borderRadius: '0.75rem',
+                overflowX: 'auto',
+              }}
+              className="text-base"
+            >
+              {tokens.map((line, i) => (
+                <div key={i} {...getLineProps({ line })}>
+                  {line.map((token, key) => (
+                    <span key={key} {...getTokenProps({ token })} />
+                  ))}
+                </div>
+              ))}
+            </pre>
+          )}
+        </Highlight>
+      </section>
+
+      <section className="text-center">
+        <div className="flex justify-center gap-4">
+          <Button asChild size="lg" className="text-lg p-6">
+            <Link href="/demo">Try the Live Demo</Link>
+          </Button>
+          <Button asChild size="lg" variant="outline" className="text-lg p-6">
+            <Link href="/docs">Read the Docs</Link>
+          </Button>
+        </div>
+      </section>
+
       <section>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {features.map((feature) => (
@@ -66,6 +125,27 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* TODO: Benchmark Section
+            
+      <section className="text-center">
+        <h2 className="text-3xl font-bold tracking-tighter mb-6">Blazing Fast Performance</h2>
+        <p className="max-w-2xl mx-auto text-lg text-muted-foreground mb-8">
+          See how PolySolve (GPU) compares against standard NumPy and CPU-based operations.
+        </p>
+        <Card>
+          <CardContent className="p-4 md:p-6">
+            <Image 
+              src="/benchmark-chart-placeholder.png"
+              alt="PolySolve Benchmark Chart" 
+              width={800} 
+              height={450} 
+              className="w-full h-auto rounded-md object-contain bg-secondary"
+            />
+          </CardContent>
+        </Card>
+      </section> */}
+      
     </div>
   );
 }
