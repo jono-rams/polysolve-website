@@ -30,7 +30,6 @@ f = Function(5)
 f.set_coeffs([1, 0, -15, 0, 10, 0])
 roots = f.get_real_roots(options=custom_options)`}
           </CodeBlock>
-          
           <h4 className="text-xl font-semibold pt-2">Parameters</h4>
           <ul className="!mt-2 space-y-6">
             <li>
