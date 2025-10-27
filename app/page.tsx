@@ -172,7 +172,7 @@ print(roots)
       {/* Benchmark Notes */}
       <section className="text-center">
         <p className="max-w-4xl mx-auto text-sm text-muted-foreground">
-          <strong>Benchmark Notes:</strong> The charts above compare PolySolve against NumPy on randomly generated polynomials of varying degrees. PolySolve&lsquo;s Genetic Algorithm was configured for high accuracy using these options: `num_of_generations=150`, `data_size=1000000`, `mutation_strength=0.005`, `elite_ratio=0.1`, `crossover_ratio=0.5`, `mutation_ratio=0.4`, `root_precision=10`.
+          <strong>Benchmark Notes:</strong> The charts above compare PolySolve against NumPy on randomly generated polynomials of varying degrees. PolySolve&lsquo;s Genetic Algorithm was configured for high accuracy using these options: <code>num_of_generations=150</code>, <code>data_size=1000000</code>, <code>mutation_strength=0.005</code>, <code>elite_ratio=0.1</code>, <code>crossover_ratio=0.5</code>, <code>mutation_ratio=0.4</code>, <code>root_precision=10</code>. For full benchmark details and code, see the <Link href="/docs/benchmarks" className="text-primary underline">Documentation</Link>.
         </p>
       </section>
       
