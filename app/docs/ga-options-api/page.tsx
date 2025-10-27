@@ -23,6 +23,7 @@ custom_options = GA_Options(
     elite_ratio=0.1,        # 10% Elitism
     crossover_ratio=0.5,    # 50% Crossover
     mutation_ratio=0.3      # 30% Mutation
+    root_precision=5        # Cluster roots to 6 decimal places
     # The remaining 10% will be new random solutions
 )
 
@@ -74,16 +75,6 @@ roots = f.get_real_roots(options=custom_options)`}
             </li>
 
             <li>
-              <p><strong><code>sample_size</code></strong></p>
-              <p className="!mt-1 ml-4 text-base">
-                The number of top-performing solutions to <strong>return</strong> at the very end of the process.
-              </p>
-              <p className="!mt-2 ml-4 text-sm text-muted-foreground">
-                <strong>Type:</strong> <code>int</code> | <strong>Default:</strong> <code>1000</code>
-              </p>
-            </li>
-
-            <li>
               <p><strong><code>mutation_strength</code></strong></p>
               <p className="!mt-1 ml-4 text-base">
                 The percentage (e.g., 0.01 for 1%) by which a solution&lsquo;s value is randomly altered during a mutation.
@@ -122,6 +113,16 @@ roots = f.get_real_roots(options=custom_options)`}
                 <strong>Type:</strong> <code>float</code> | <strong>Default:</strong> <code>0.40</code> (40%)
               </p>
             </li>
+
+            <li>
+               <p><strong><code>root_precision</code></strong></p>
+               <p className="!mt-1 ml-4 text-base">
+                 The number of decimal places to round roots to when clustering unique results. A smaller number (e.g., 3) groups roots more aggressively. A larger number (e.g., 7) is more precise but may return multiple near-identical roots.
+               </p>
+               <p className="!mt-2 ml-4 text-sm text-muted-foreground">
+                 <strong>Type:</strong> <code>int</code> | <strong>Default:</strong> <code>5</code>
+               </p>
+             </li>
             
           </ul>
           <p><strong>Note:</strong> The sum of <code>elite_ratio</code>, <code>crossover_ratio</code>, and <code>mutation_ratio</code> must be less than or equal to 1.0. The remaining percentage of the population will be filled with new random solutions to ensure diversity.</p>
