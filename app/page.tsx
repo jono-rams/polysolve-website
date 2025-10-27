@@ -63,7 +63,7 @@ export default function Home() {
 import polysolve
 
 # Create an object representing f(x) = 2x^2 - 3x - 5
-f1 = polysolve.function(2)
+f1 = polysolve.Function(2)
 f1.set_coeffs([2, -3, -5])
 
 # Find the approximate real roots
