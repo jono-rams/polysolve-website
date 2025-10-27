@@ -75,7 +75,7 @@ roots = f.get_real_roots(options=custom_options)`}
             <li>
               <p><strong><code>mutation_strength</code></strong></p>
               <p className="!mt-1 ml-4 text-base">
-                The percentage (e.g., 0.01 for 1%) by which a solution's value is randomly altered during a mutation.
+                The percentage (e.g., 0.01 for 1%) by which a solution&lsquo;s value is randomly altered during a mutation.
               </p>
               <p className="!mt-2 ml-4 text-sm text-muted-foreground">
                 <strong>Type:</strong> <code>float</code> | <strong>Default:</strong> <code>0.01</code> (1%)
@@ -95,7 +95,7 @@ roots = f.get_real_roots(options=custom_options)`}
             <li>
               <p><strong><code>crossover_ratio</code></strong></p>
               <p className="!mt-1 ml-4 text-base">
-                The percentage (e.g., 0.45 for 45%) of the next generation to be created by "breeding" two solutions from the parent pool.
+                The percentage (e.g., 0.45 for 45%) of the next generation to be created by &quot;breeding&quot; two solutions from the parent pool.
               </p>
               <p className="!mt-2 ml-4 text-sm text-muted-foreground">
                 <strong>Type:</strong> <code>float</code> | <strong>Default:</strong> <code>0.45</code> (45%)
