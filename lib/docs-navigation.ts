@@ -27,4 +27,8 @@ export const docsSections = [
     title: '7. CUDA Acceleration',
     href: '/docs/cuda-acceleration',
   },
+  {
+    title: '8. Benchmarks',
+    href: '/docs/benchmarks',
+  },
 ];
