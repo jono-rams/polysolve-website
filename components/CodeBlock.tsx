@@ -21,7 +21,7 @@ const CodeBlock = ({ children, language = "plaintext" }: CodeBlockProps) => {
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <pre
           style={style}
-          className={`${className} font-mono text-sm p-4 rounded-md my-4`}
+          className={`${className} font-mono text-sm p-4 rounded-md my-4 overflow-x-auto`}
         >
           {tokens.map((line, i) => (
             <div key={i} {...getLineProps({ line })}>
