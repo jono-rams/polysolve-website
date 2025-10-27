@@ -13,7 +13,7 @@ import { HelpCircle } from "lucide-react";
 
 type PyodideState = "loading" | "ready" | "error";
 
-type GaOptionKey = "min_range" | "max_range" | "num_of_generations" | "sample_size" | "data_size" | "mutation_strength" | "elite_ratio" | "crossover_ratio" | "mutation_ratio";
+type GaOptionKey = "min_range" | "max_range" | "num_of_generations" | "data_size" | "mutation_strength" | "elite_ratio" | "crossover_ratio" | "mutation_ratio" | "root_precision";
 
 type PolynomialInputProps = {
   id: string;
@@ -64,12 +64,12 @@ export default function DemoPage() {
     min_range: "-100.0",
     max_range: "100.0",
     num_of_generations: "10",
-    sample_size: "10",
     data_size: "10000",
     mutation_strength: "0.01",
     elite_ratio: "0.05",
     crossover_ratio: "0.45",
     mutation_ratio: "0.40",
+    root_precision: "5",
   });
 
   const workerRef = useRef<Worker | null>(null);
@@ -187,12 +187,12 @@ export default function DemoPage() {
     { name: 'min_range', label: 'Min Range', description: 'The minimum value for the initial random solutions.' },
     { name: 'max_range', label: 'Max Range', description: 'The maximum value for the initial random solutions.' },
     { name: 'num_of_generations', label: 'Generations', description: 'The number of iterations the algorithm will run.' },
-    { name: 'sample_size', label: 'Sample Size', description: 'The number of top solutions to return at the end.' },
     { name: 'data_size', label: 'Data Size (Population)', description: 'The total number of solutions generated in each generation.' },
     { name: 'mutation_strength', label: 'Mutation Strength', description: 'The percentage (e.g., 0.01 for 1%) by which a solution is mutated.' },
     { name: 'elite_ratio', label: 'Elite Ratio', description: 'The percentage (e.g., 0.05 for 5%) of the best solutions to carry over unchanged.' },
     { name: 'crossover_ratio', label: 'Crossover Ratio', description: 'The percentage (e.g., 0.45 for 45%) of the next generation created by breeding.' },
     { name: 'mutation_ratio', label: 'Mutation Ratio', description: 'The percentage (e.g., 0.40 for 40%) of the next generation created by mutation.' },
+    { name: 'root_precision', label: 'Root Precision', description: 'Decimal places to round roots to for clustering unique results (default 5).' },
   ];
 
   // --- JSX RENDER ---
