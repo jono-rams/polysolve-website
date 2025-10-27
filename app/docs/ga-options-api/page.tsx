@@ -36,18 +36,18 @@ roots = f.get_real_roots(options=custom_options)`}
             <li>
               <p><strong><code>min_range</code> / <code>max_range</code></strong></p>
               <p className="!mt-1 ml-4 text-base">
-                The lower and upper bounds for the algorithm's random search space.
+                The lower and upper bounds for the algorithm&lsquo;s random search space.
               </p>
               <p className="!mt-2 ml-4 text-base">
                 <strong>Important:</strong> If you leave the defaults, PolySolve will 
                 automatically ignore them and instead calculate a guaranteed, 
-                mathematically-correct range using Cauchy's bound. This is 
+                mathematically-correct range using Cauchy&lsquo;s bound. This is 
                 the recommended behavior for most use cases.
               </p>
               <p className="!mt-2 ml-4 text-base">
                 You should only set a custom range if you know your roots are in a 
                 specific, narrow area (e.g., <code>[0, 5]</code>). This will act 
-                as an "expert override" and can significantly speed up convergence.
+                as an &quot;expert override&quot; and can significantly speed up convergence.
               </p>
               <p className="!mt-2 ml-4 text-sm text-muted-foreground">
                 <strong>Type:</strong> <code>float</code> | <strong>Default:</strong> <code>-100.0</code> / <code>100.0</code>

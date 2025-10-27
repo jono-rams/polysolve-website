@@ -2,12 +2,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Bot, Cpu, Gauge, Zap } from "lucide-react";
+import { ShieldCheck, Cpu, Gauge, Zap, AlertTriangle } from "lucide-react";
 
 import CodeBlock from "@/components/CodeBlock";
 
 export default function Home() {
   const features = [
+    {
+      icon: <ShieldCheck className="h-8 w-8 text-primary" />,
+      title: "Numerically Stable Solver",
+      description: "Uses a robust genetic algorithm to find correct roots for high-degree polynomials where traditional methods like NumPy suffer from instability and fail.",
+    },
     {
       icon: <Zap className="h-8 w-8 text-primary" />,
       title: "CUDA Accelerated",
@@ -17,11 +22,6 @@ export default function Home() {
       icon: <Cpu className="h-8 w-8 text-primary" />,
       title: "Efficient NumPy Fallback",
       description: "No GPU? No problem. PolySolve runs efficiently on CPU using optimized NumPy operations.",
-    },
-    {
-      icon: <Bot className="h-8 w-8 text-primary" />,
-      title: "Genetic Algorithm Solver",
-      description: "Finds real roots for complex polynomials using a powerful, parallelizable genetic algorithm.",
     },
     {
       icon: <Gauge className="h-8 w-8 text-primary" />,
@@ -37,10 +37,10 @@ export default function Home() {
           <Image src="/PolySolve-Logo.png" alt='PolySolve Logo' width={256} height={256} className='h-auto w-auto' ></Image>
         </div>
         <h1 className="text-4xl md:text-5xl font-bold tracking-tighter my-3 py-2">
-          The Modern Python Polynomial Solver
+          The <span className="text-green-500">Accurate</span> Python Polynomial Solver
         </h1>
-        <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-          A robust and high-performance library for calculus, root-finding, and arithmetic.
+        <p className="mt-4 max-w-3xl mx-auto text-lg text-muted-foreground">
+          Finds stable, correct roots for high-degree polynomials where standard methods like NumPy fail due to numerical instability. Robust calculus and arithmetic included.
         </p>
         <div className="mt-8">
           <Card className="max-w-md mx-auto bg-secondary">
@@ -69,7 +69,7 @@ f1.set_coeffs([2, -3, -5])
 # Find the approximate real roots
 roots = f1.get_real_roots()
 print(roots)
-# Expected output: [-1.0001, 2.5003]
+# Expected accurate output: [-1.0001, 2.5003] after internal clustering)
   `}
         </CodeBlock>
       </section>
@@ -101,25 +101,73 @@ print(roots)
         </div>
       </section>
 
-      {/* TODO: Benchmark Section
-            
+      {/* 1. Accuracy Chart */}
       <section className="text-center">
-        <h2 className="text-3xl font-bold tracking-tighter mb-6">Blazing Fast Performance</h2>
-        <p className="max-w-2xl mx-auto text-lg text-muted-foreground mb-8">
-          See how PolySolve (GPU) compares against standard NumPy and CPU-based operations.
+        <h2 className="text-3xl font-bold tracking-tighter mb-6">Accuracy Where It Matters Most</h2>
+        <p className="max-w-3xl mx-auto text-lg text-muted-foreground mb-8">
+          Standard libraries like NumPy can be fast for low degrees, but suffer from catastrophic <span className="text-red-500 font-semibold">numerical instability</span> on high-degree polynomials, leading to massive errors. PolySolve&lsquo;s genetic algorithm is designed for stability, delivering accurate results you can trust.
         </p>
         <Card>
-          <CardContent className="p-4 md:p-6">
+          <CardHeader className="items-center">
+             <CardTitle className="text-xl flex items-center gap-2">
+                <AlertTriangle className="h-5 w-5 text-red-500"/>
+                NumPy Instability vs. PolySolve Stability
+             </CardTitle>
+          </CardHeader>
+          <CardContent className="p-2 md:p-4">
             <Image 
-              src="/benchmark-chart-placeholder.png"
-              alt="PolySolve Benchmark Chart" 
-              width={800} 
-              height={450} 
-              className="w-full h-auto rounded-md object-contain bg-secondary"
+              src="/benchmark-accuracy-chart.png"
+              alt="PolySolve Benchmark: Accuracy (MAE) vs NumPy" 
+              width={1000} 
+              height={600} 
+              className="w-full h-auto rounded-md object-contain"
             />
           </CardContent>
         </Card>
-      </section> */}
+      </section>
+
+      {/* 2. Speed Chart */}
+      <section className="text-center">
+        <h2 className="text-3xl font-bold tracking-tighter mb-6">The Performance Trade-off for Accuracy</h2>
+        <p className="max-w-3xl mx-auto text-lg text-muted-foreground mb-8">
+          Achieving numerical stability requires a more computationally intensive algorithm. PolySolve (CPU) is slower than NumPy, but crucially, it provides the <span className="text-green-500 font-semibold">correct answer</span>. For practical speed, PolySolve (GPU) offers a massive acceleration.
+        </p>
+        <Card>
+           <CardHeader className="items-center">
+             <CardTitle className="text-xl">Performance vs. Problem Complexity</CardTitle>
+          </CardHeader>
+          <CardContent className="p-2 md:p-4">
+            <Image 
+              src="/benchmark-speed-chart.png"
+              alt="PolySolve Benchmark: Speed Comparison" 
+              width={1000} 
+              height={600} 
+              className="w-full h-auto rounded-md object-contain"
+            />
+          </CardContent>
+        </Card>
+      </section>
+
+      <section className="text-center">
+        <h2 className="text-3xl font-bold tracking-tighter mb-6">CUDA Makes Accuracy Practical</h2>
+        <p className="max-w-3xl mx-auto text-lg text-muted-foreground mb-8">
+          PolySolve&lsquo;s CUDA acceleration delivers a significant speedup compared to its own CPU implementation, making it feasible to solve complex, high-degree polynomials accurately in seconds, not minutes.
+        </p>
+        <Card>
+           <CardHeader className="items-center">
+             <CardTitle className="text-xl">PolySolve GPU vs. CPU Speedup</CardTitle>
+          </CardHeader>
+          <CardContent className="p-2 md:p-4">
+            <Image 
+              src="/benchmark-speedup-chart.png"
+              alt="PolySolve Benchmark: GPU Speedup Factor" 
+              width={1000} 
+              height={600} 
+              className="w-full h-auto rounded-md object-contain"
+            />
+          </CardContent>
+        </Card>
+      </section>
       
     </div>
   );

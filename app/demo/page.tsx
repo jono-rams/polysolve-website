@@ -69,7 +69,7 @@ export default function DemoPage() {
     elite_ratio: "0.05",
     crossover_ratio: "0.45",
     mutation_ratio: "0.40",
-    root_precision: "5",
+    root_precision: "2",
   });
 
   const workerRef = useRef<Worker | null>(null);
@@ -239,6 +239,9 @@ export default function DemoPage() {
                         </div>
                       ))}
                     </div>
+                    <p className="text-xs text-amber-400 pt-4 px-1">
+                      <strong>Note:</strong> Higher root precision requires more intensive GA settings (generations/population) than used in this demo. For best results here, keep precision low (e.g., 2-3).
+                    </p>
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
