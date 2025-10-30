@@ -192,7 +192,7 @@ export default function DemoPage() {
     { name: 'elite_ratio', label: 'Elite Ratio', description: 'The percentage (e.g., 0.05 for 5%) of the best solutions to carry over unchanged.' },
     { name: 'crossover_ratio', label: 'Crossover Ratio', description: 'The percentage (e.g., 0.45 for 45%) of the next generation created by breeding.' },
     { name: 'mutation_ratio', label: 'Mutation Ratio', description: 'The percentage (e.g., 0.40 for 40%) of the next generation created by mutation.' },
-    { name: 'root_precision', label: 'Root Precision', description: 'Decimal places to round roots to for clustering unique results (default 5).' },
+    { name: 'root_precision', label: 'Root Precision', description: 'Decimal places to round roots to for clustering unique results.' },
   ];
 
   // --- JSX RENDER ---
