@@ -131,7 +131,7 @@ print(roots)
       <section className="text-center">
         <h2 className="text-3xl font-bold tracking-tighter mb-6">High Performance on CPU & GPU</h2>
         <p className="max-w-3xl mx-auto text-lg text-muted-foreground mb-8">
-          Thanks to Numba, the PolySolve (CPU) solver is highly optimized. While NumPy is faster for simple, low-degree problems, PolySolve's performance scales far better, remaining fast and stable as polynomial complexity increases. And crucially, it provides the <span className="text-green-500 font-semibold">correct answer</span>.
+          Thanks to Numba, the PolySolve (CPU) solver is highly optimized. While NumPy is faster for simple, low-degree problems, PolySolve&lsquo;s performance scales far better, remaining fast and stable as polynomial complexity increases. And crucially, it provides the <span className="text-green-500 font-semibold">correct answer</span>.
         </p>
         <Card>
           <CardHeader className="items-center">
@@ -174,7 +174,7 @@ print(roots)
       {/* Benchmark Notes */}
       <section className="text-center">
         <p className="max-w-4xl mx-auto text-sm text-muted-foreground">
-          <strong>Benchmark Notes:</strong> The charts above compare PolySolve (v0.6.0) against NumPy on randomly generated polynomials of varying degrees. PolySolve's Genetic Algorithm was configured for high accuracy using these options: <code>num_of_generations=150</code>, <code>data_size=1000000</code>, and other tuning parameters. For full benchmark details and code, see the <Link href="/docs/benchmarks" className="text-primary underline">Documentation</Link>.
+          <strong>Benchmark Notes:</strong> The charts above compare PolySolve (v0.6.0) against NumPy on randomly generated polynomials of varying degrees. PolySolve&lsquo;s Genetic Algorithm was configured for high accuracy using these options: <code>num_of_generations=150</code>, <code>data_size=1000000</code>, and other tuning parameters. For full benchmark details and code, see the <Link href="/docs/benchmarks" className="text-primary underline">Documentation</Link>.
         </p>
       </section>
       
