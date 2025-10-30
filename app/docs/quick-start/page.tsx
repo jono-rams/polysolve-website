@@ -26,7 +26,7 @@ print(f"Function: {f1}")
 # Expected output: Function: 2x^2 - 3x - 5
 
 # Find the approximate real roots (where f(x) = 0)
-# This uses a genetic algorithm by default.
+# This uses the Numba-accelerated CPU solver by default.
 roots = f1.get_real_roots()
 
 print(f"Approximate Roots: {roots}")

@@ -20,8 +20,8 @@ export default function Home() {
     },
     {
       icon: <Cpu className="h-8 w-8 text-primary" />,
-      title: "Efficient NumPy Fallback",
-      description: "No GPU? No problem. PolySolve runs efficiently on CPU using optimized NumPy operations.",
+      title: "Numba Accelerated CPU",
+      description: "No GPU? No problem. The default solver is JIT-compiled with Numba and parallelized to be highly performant on your CPU.",
     },
     {
       icon: <Gauge className="h-8 w-8 text-primary" />,
@@ -66,10 +66,11 @@ import polysolve
 f1 = polysolve.Function(2)
 f1.set_coeffs([2, -3, -5])
 
-# Find the approximate real roots
+# Find the approximate real roots using the
+# fast, Numba-accelerated CPU solver.
 roots = f1.get_real_roots()
 print(roots)
-# Expected accurate output: [-1.0001, 2.5003] after internal clustering)
+# Expected accurate output: [-1. 2.5] (after clustering)
   `}
         </CodeBlock>
       </section>
@@ -108,11 +109,11 @@ print(roots)
           Standard libraries like NumPy can be fast for low degrees, but suffer from catastrophic <span className="text-red-500 font-semibold">numerical instability</span> on high-degree polynomials, leading to massive errors. PolySolve&lsquo;s genetic algorithm is designed for stability, delivering accurate results you can trust.
         </p>
         <Card>
-          <CardHeader className="items-center">
-             <CardTitle className="text-xl flex items-center gap-2">
+          <CardHeader className="items-center justify-center">
+              <CardTitle className="text-xl flex items-center gap-2">
                 <AlertTriangle className="h-5 w-5 text-red-500"/>
                 NumPy Instability vs. PolySolve Stability
-             </CardTitle>
+              </CardTitle>
           </CardHeader>
           <CardContent className="p-2 md:p-4">
             <Image 
@@ -128,13 +129,13 @@ print(roots)
 
       {/* 2. Speed Chart */}
       <section className="text-center">
-        <h2 className="text-3xl font-bold tracking-tighter mb-6">The Performance Trade-off for Accuracy</h2>
+        <h2 className="text-3xl font-bold tracking-tighter mb-6">High Performance on CPU & GPU</h2>
         <p className="max-w-3xl mx-auto text-lg text-muted-foreground mb-8">
-          Achieving numerical stability requires a more computationally intensive algorithm. PolySolve (CPU) is slower than NumPy, but crucially, it provides the <span className="text-green-500 font-semibold">correct answer</span>. For practical speed, PolySolve (GPU) offers a massive acceleration.
+          Thanks to Numba, the PolySolve (CPU) solver is highly optimized. While NumPy is faster for simple, low-degree problems, PolySolve&lsquo;s performance scales far better, remaining fast and stable as polynomial complexity increases. And crucially, it provides the <span className="text-green-500 font-semibold">correct answer</span>.
         </p>
         <Card>
-           <CardHeader className="items-center">
-             <CardTitle className="text-xl">Performance vs. Problem Complexity</CardTitle>
+          <CardHeader className="items-center justify-center">
+            <CardTitle className="text-xl">Performance vs. Problem Complexity</CardTitle>
           </CardHeader>
           <CardContent className="p-2 md:p-4">
             <Image 
@@ -148,14 +149,15 @@ print(roots)
         </Card>
       </section>
 
-      <section className="text-center">
+      {/* 3. Speedup Chart */}
+      <section className="text-center justify-center">
         <h2 className="text-3xl font-bold tracking-tighter mb-6">CUDA Makes Accuracy Practical</h2>
         <p className="max-w-3xl mx-auto text-lg text-muted-foreground mb-8">
-          PolySolve&lsquo;s CUDA acceleration delivers a significant speedup compared to its own CPU implementation, making it feasible to solve complex, high-degree polynomials accurately in seconds, not minutes.
+          PolySolve&lsquo;s CUDA acceleration provides a massive speedup (over 17x at degree 100) compared to its (already fast) Numba-powered CPU implementation. This makes it feasible to solve complex, high-degree polynomials accurately in seconds, not minutes.
         </p>
         <Card>
-           <CardHeader className="items-center">
-             <CardTitle className="text-xl">PolySolve GPU vs. CPU Speedup</CardTitle>
+          <CardHeader className="items-center">
+            <CardTitle className="text-xl">PolySolve GPU vs. CPU Speedup</CardTitle>
           </CardHeader>
           <CardContent className="p-2 md:p-4">
             <Image 
@@ -172,7 +174,7 @@ print(roots)
       {/* Benchmark Notes */}
       <section className="text-center">
         <p className="max-w-4xl mx-auto text-sm text-muted-foreground">
-          <strong>Benchmark Notes:</strong> The charts above compare PolySolve against NumPy on randomly generated polynomials of varying degrees. PolySolve&lsquo;s Genetic Algorithm was configured for high accuracy using these options: <code>num_of_generations=150</code>, <code>data_size=1000000</code>, <code>mutation_strength=0.005</code>, <code>elite_ratio=0.1</code>, <code>crossover_ratio=0.5</code>, <code>mutation_ratio=0.4</code>, <code>root_precision=10</code>. For full benchmark details and code, see the <Link href="/docs/benchmarks" className="text-primary underline">Documentation</Link>.
+          <strong>Benchmark Notes:</strong> The charts above compare PolySolve (v0.6.0) against NumPy on randomly generated polynomials of varying degrees. PolySolve&lsquo;s Genetic Algorithm was configured for high accuracy using these options: <code>num_of_generations=150</code>, <code>data_size=1000000</code>, and other tuning parameters. For full benchmark details and code, see the <Link href="/docs/benchmarks" className="text-primary underline">Documentation</Link>.
         </p>
       </section>
       

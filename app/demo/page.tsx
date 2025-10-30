@@ -13,7 +13,7 @@ import { HelpCircle } from "lucide-react";
 
 type PyodideState = "loading" | "ready" | "error";
 
-type GaOptionKey = "min_range" | "max_range" | "num_of_generations" | "data_size" | "mutation_strength" | "elite_ratio" | "crossover_ratio" | "mutation_ratio" | "root_precision";
+type GaOptionKey = "min_range" | "max_range" | "num_of_generations" | "data_size" | "mutation_strength" | "elite_ratio" | "crossover_ratio" | "mutation_ratio" | "selection_percentile" | "blend_alpha" | "root_precision";
 
 type PolynomialInputProps = {
   id: string;
@@ -69,6 +69,8 @@ export default function DemoPage() {
     elite_ratio: "0.05",
     crossover_ratio: "0.45",
     mutation_ratio: "0.40",
+    selection_percentile: "0.66",
+    blend_alpha: "0.5",
     root_precision: "2",
   });
 
@@ -192,6 +194,8 @@ export default function DemoPage() {
     { name: 'elite_ratio', label: 'Elite Ratio', description: 'The percentage (e.g., 0.05 for 5%) of the best solutions to carry over unchanged.' },
     { name: 'crossover_ratio', label: 'Crossover Ratio', description: 'The percentage (e.g., 0.45 for 45%) of the next generation created by breeding.' },
     { name: 'mutation_ratio', label: 'Mutation Ratio', description: 'The percentage (e.g., 0.40 for 40%) of the next generation created by mutation.' },
+    { name: 'selection_percentile', label: 'Selection Percentile', description: 'Top % of solutions for the crossover parent pool. A larger value (e.g., 0.75) helps find all roots.' },
+    { name: 'blend_alpha', label: 'Blend Alpha (BLX-α)', description: 'Crossover expansion factor. 0.0 = no expansion, 0.5 = 50% expansion. Good for exploration.' },
     { name: 'root_precision', label: 'Root Precision', description: 'Decimal places to round roots to for clustering unique results.' },
   ];
 
