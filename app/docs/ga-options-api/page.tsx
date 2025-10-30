@@ -11,121 +11,241 @@ export default function GaOptionsPage() {
           <CardTitle>5. API Reference: `GA_Options` Class</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p>The <code>GA_Options</code> dataclass allows you to fine-tune the genetic algorithm used in the <code>solve_x</code> and <code>get_real_roots</code> methods. You can trade speed for accuracy by adjusting the population size, number of generations, and the strategy ratios.</p>
+          <p>
+            The <code>GA_Options</code> dataclass allows you to fine-tune the
+            genetic algorithm used in the <code>solve_x</code> and{" "}
+            <code>get_real_roots</code> methods. You can trade speed for
+            accuracy and tune the algorithm&lsquo;s strategy for finding
+            single vs. multiple roots.
+          </p>
           <CodeBlock language="python">
-{`from polysolve import Function, GA_Options
+            {`from polysolve import Function, GA_Options
 
-# Configure a more exhaustive search with custom GA ratios
+# Configure a robust search for finding *all* real roots
 custom_options = GA_Options(
     num_of_generations=20,
     data_size=500000,
-    mutation_strength=0.02, # Mutate by +/- 2%
-    elite_ratio=0.1,        # 10% Elitism
-    crossover_ratio=0.5,    # 50% Crossover
-    mutation_ratio=0.3      # 30% Mutation
-    root_precision=5        # Cluster roots to 6 decimal places
-    # The remaining 10% will be new random solutions
+    
+    # Widen the parent pool to 75% to keep all
+    # "niches" (solution clouds) alive.
+    selection_percentile=0.75,
+    
+    # Increase blend factor to 0.75 to allow
+    # crossover to explore *outside* the parent range.
+    blend_alpha=0.75,
+    
+    # Standard ratios
+    elite_ratio=0.05,
+    crossover_ratio=0.45,
+    mutation_ratio=0.40
 )
 
 f = Function(5)
 f.set_coeffs([1, 0, -15, 0, 10, 0])
+# This search is now optimized for finding all roots
 roots = f.get_real_roots(options=custom_options)`}
           </CodeBlock>
           <h4 className="text-xl font-semibold pt-2">Parameters</h4>
           <ul className="!mt-2 space-y-6">
             <li>
-              <p><strong><code>min_range</code> / <code>max_range</code></strong></p>
+              <p>
+                <strong>
+                  <code>min_range</code> / <code>max_range</code>
+                </strong>
+              </p>
               <p className="!mt-1 ml-4 text-base">
-                The lower and upper bounds for the algorithm&lsquo;s random search space.
+                The lower and upper bounds for the algorithm&lsquo;s random search
+                space.
               </p>
               <p className="!mt-2 ml-4 text-base">
-                <strong>Important:</strong> If you leave the defaults, PolySolve will 
-                automatically ignore them and instead calculate a guaranteed, 
-                mathematically-correct range using Cauchy&lsquo;s bound. This is 
-                the recommended behavior for most use cases.
+                <strong>Important:</strong> If you leave the defaults,
+                PolySolve will automatically ignore them and instead calculate a
+                guaranteed, mathematically-correct range using Cauchy&lsquo;s
+                bound. This is the recommended behavior for most use cases.
               </p>
               <p className="!mt-2 ml-4 text-base">
-                You should only set a custom range if you know your roots are in a 
-                specific, narrow area (e.g., <code>[0, 5]</code>). This will act 
-                as an &quot;expert override&quot; and can significantly speed up convergence.
+                You should only set a custom range if you know your roots are in
+                a specific, narrow area (e.g., <code>[0, 5]</code>). This will
+                act as an &quot;expert override&quot; and can significantly
+                speed up convergence.
               </p>
               <p className="!mt-2 ml-4 text-sm text-muted-foreground">
-                <strong>Type:</strong> <code>float</code> | <strong>Default:</strong> <code>-100.0</code> / <code>100.0</code>
+                <strong>Type:</strong> <code>float</code> |{" "}
+                <strong>Default:</strong> <code>-100.0</code> /{" "}
+                <code>100.0</code>
               </p>
             </li>
 
             <li>
-              <p><strong><code>num_of_generations</code></strong></p>
+              <p>
+                <strong>
+                  <code>num_of_generations</code>
+                </strong>
+              </p>
               <p className="!mt-1 ml-4 text-base">
-                The number of iterations (generations) the algorithm will run. More generations can lead to more accurate results.
+                The number of iterations (generations) the algorithm will run.
+                More generations can lead to more accurate results.
               </p>
               <p className="!mt-2 ml-4 text-sm text-muted-foreground">
-                <strong>Type:</strong> <code>int</code> | <strong>Default:</strong> <code>10</code>
+                <strong>Type:</strong> <code>int</code> | <strong>Default:</strong>{" "}
+                <code>10</code>
               </p>
             </li>
 
             <li>
-              <p><strong><code>data_size</code></strong></p>
+              <p>
+                <strong>
+                  <code>data_size</code>
+                </strong>
+              </p>
               <p className="!mt-1 ml-4 text-base">
-                The total number of &quot;solutions&quot; (the population size) generated in each generation. A larger size increases the chance of finding all roots but is more computationally expensive.
+                The total number of &quot;solutions&quot; (the population size)
+                generated in each generation. A larger size increases the
+                chance of finding all roots but is more computationally
+                expensive.
               </p>
               <p className="!mt-2 ml-4 text-sm text-muted-foreground">
-                <strong>Type:</strong> <code>int</code> | <strong>Default:</strong> <code>100000</code>
+                <strong>Type:</strong> <code>int</code> |{" "}
+                <strong>Default:</strong> <code>100000</code>
               </p>
             </li>
 
             <li>
-              <p><strong><code>mutation_strength</code></strong></p>
+              <p>
+                <strong>
+                  <code>mutation_strength</code>
+                </strong>
+              </p>
               <p className="!mt-1 ml-4 text-base">
-                The percentage (e.g., 0.01 for 1%) by which a solution&lsquo;s value is randomly altered during a mutation.
+                The percentage (e.g., 0.01 for 1%) by which a
+                solution&lsquo;s value is randomly altered during a mutation.
               </p>
               <p className="!mt-2 ml-4 text-sm text-muted-foreground">
-                <strong>Type:</strong> <code>float</code> | <strong>Default:</strong> <code>0.01</code> (1%)
-              </p>
-            </li>
-            
-            <li>
-              <p><strong><code>elite_ratio</code></strong></p>
-              <p className="!mt-1 ml-4 text-base">
-                The percentage (e.g., 0.05 for 5%) of the <strong>best</strong> solutions to carry over to the next generation unchanged (elitism).
-              </p>
-              <p className="!mt-2 ml-4 text-sm text-muted-foreground">
-                <strong>Type:</strong> <code>float</code> | <strong>Default:</strong> <code>0.05</code> (5%)
-              </p>
-            </li>
-            
-            <li>
-              <p><strong><code>crossover_ratio</code></strong></p>
-              <p className="!mt-1 ml-4 text-base">
-                The percentage (e.g., 0.45 for 45%) of the next generation to be created by &quot;breeding&quot; two solutions from the parent pool.
-              </p>
-              <p className="!mt-2 ml-4 text-sm text-muted-foreground">
-                <strong>Type:</strong> <code>float</code> | <strong>Default:</strong> <code>0.45</code> (45%)
-              </p>
-            </li>
-            
-            <li>
-              <p><strong><code>mutation_ratio</code></strong></p>
-              <p className="!mt-1 ml-4 text-base">
-                The percentage (e.g., 0.40 for 40%) of the next generation to be created by mutating solutions from the parent pool.
-              </p>
-              <p className="!mt-2 ml-4 text-sm text-muted-foreground">
-                <strong>Type:</strong> <code>float</code> | <strong>Default:</strong> <code>0.40</code> (40%)
+                <strong>Type:</strong> <code>float</code> |{" "}
+                <strong>Default:</strong> <code>0.01</code> (1%)
               </p>
             </li>
 
             <li>
-               <p><strong><code>root_precision</code></strong></p>
-               <p className="!mt-1 ml-4 text-base">
-                 The number of decimal places to round roots to when clustering unique results. A smaller number (e.g., 3) groups roots more aggressively. A larger number (e.g., 7) is more precise but may return multiple near-identical roots.
-               </p>
-               <p className="!mt-2 ml-4 text-sm text-muted-foreground">
-                 <strong>Type:</strong> <code>int</code> | <strong>Default:</strong> <code>5</code>
-               </p>
-             </li>
-            
+              <p>
+                <strong>
+                  <code>elite_ratio</code>
+                </strong>
+              </p>
+              <p className="!mt-1 ml-4 text-base">
+                The percentage (e.g., 0.05 for 5%) of the <strong>best</strong>{" "}
+                solutions to carry over to the next generation unchanged
+                (elitism).
+              </p>
+              <p className="!mt-2 ml-4 text-sm text-muted-foreground">
+                <strong>Type:</strong> <code>float</code> |{" "}
+                <strong>Default:</strong> <code>0.05</code> (5%)
+              </p>
+            </li>
+
+            <li>
+              <p>
+                <strong>
+                  <code>crossover_ratio</code>
+                </strong>
+              </p>
+              <p className="!mt-1 ml-4 text-base">
+                The percentage (e.g., 0.45 for 45%) of the next generation to be
+                created by &quot;breeding&quot; two solutions from the parent
+                pool.
+              </p>
+              <p className="!mt-2 ml-4 text-sm text-muted-foreground">
+                <strong>Type:</strong> <code>float</code> |{" "}
+                <strong>Default:</strong> <code>0.45</code> (45%)
+              </p>
+            </li>
+
+            <li>
+              <p>
+                <strong>
+                  <code>mutation_ratio</code>
+                </strong>
+              </p>
+              <p className="!mt-1 ml-4 text-base">
+                The percentage (e.g., 0.40 for 40%) of the next generation to be
+                created by mutating solutions from the parent pool.
+              </p>
+              <p className="!mt-2 ml-4 text-sm text-muted-foreground">
+                <strong>Type:</strong> <code>float</code> |{" "}
+                <strong>Default:</strong> <code>0.40</code> (40%)
+              </p>
+            </li>
+
+            <li>
+              <p>
+                <strong>
+                  <code>selection_percentile</code>
+                </strong>
+              </p>
+              <p className="!mt-1 ml-4 text-base">
+                The top percentage (e.g., 0.66 for 66%) of solutions to use as
+                the &quot;parent pool&quot; for crossover.
+              </p>
+              <p className="!mt-2 ml-4 text-base">
+                This is a key parameter for multi-root finding. A smaller value
+                (e.g., 0.5) is aggressive and converges quickly on a single
+                root. A larger value (e.g., 0.75) preserves diversity and is
+                much better at finding <strong>all</strong> real roots.
+              </p>
+              <p className="!mt-2 ml-4 text-sm text-muted-foreground">
+                <strong>Type:</strong> <code>float</code> |{" "}
+                <strong>Default:</strong> <code>0.66</code> (66%)
+              </p>
+            </li>
+
+            <li>
+              <p>
+                <strong>
+                  <code>blend_alpha</code>
+                </strong>
+              </p>
+              <p className="!mt-1 ml-4 text-base">
+                The expansion factor for Blend Crossover (BLX-α). This controls
+                how far &quot;outside&quot; the parent&lsquo;s range a new
+                child solution can be created.
+              </p>
+              <p className="!mt-2 ml-4 text-base">
+                A value of <code>0.0</code> is purely interpolative (child is
+                always between parents). A value of <code>0.5</code> (the
+                default) allows the new search range to be 50% larger than the
+                parent range, which is excellent for exploration.
+              </p>
+              <p className="!mt-2 ml-4 text-sm text-muted-foreground">
+                <strong>Type:</strong> <code>float</code> |{" "}
+                <strong>Default:</strong> <code>0.5</code>
+              </p>
+            </li>
+
+            <li>
+              <p>
+                <strong>
+                  <code>root_precision</code>
+                </strong>
+              </p>
+              <p className="!mt-1 ml-4 text-base">
+                The number of decimal places to round roots to when clustering
+                unique results. A smaller number (e.g., 3) groups roots more
+                aggressively. A larger number (e.g., 7) is more precise but may
+                return multiple near-identical roots.
+              </p>
+              <p className="!mt-2 ml-4 text-sm text-muted-foreground">
+                <strong>Type:</strong> <code>int</code> | <strong>Default:</strong>{" "}
+                <code>5</code>
+              </p>
+            </li>
           </ul>
-          <p><strong>Note:</strong> The sum of <code>elite_ratio</code>, <code>crossover_ratio</code>, and <code>mutation_ratio</code> must be less than or equal to 1.0. The remaining percentage of the population will be filled with new random solutions to ensure diversity.</p>
+          <p>
+            <strong>Note:</strong> The sum of <code>elite_ratio</code>,{" "}
+            <code>crossover_ratio</code>, and <code>mutation_ratio</code> must
+            be less than or equal to 1.0. The remaining percentage of the
+            population will be filled with new random solutions to ensure
+            diversity.
+          </p>
         </CardContent>
       </Card>
       <DocsPagination />
