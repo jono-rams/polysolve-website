@@ -109,7 +109,7 @@ print(roots)
           Standard libraries like NumPy can be fast for low degrees, but suffer from catastrophic <span className="text-red-500 font-semibold">numerical instability</span> on high-degree polynomials, leading to massive errors. PolySolve&lsquo;s genetic algorithm is designed for stability, delivering accurate results you can trust.
         </p>
         <Card>
-          <CardHeader className="items-center">
+          <CardHeader className="items-center justify-center">
               <CardTitle className="text-xl flex items-center gap-2">
                 <AlertTriangle className="h-5 w-5 text-red-500"/>
                 NumPy Instability vs. PolySolve Stability
@@ -134,7 +134,7 @@ print(roots)
           Thanks to Numba, the PolySolve (CPU) solver is highly optimized. While NumPy is faster for simple, low-degree problems, PolySolve&lsquo;s performance scales far better, remaining fast and stable as polynomial complexity increases. And crucially, it provides the <span className="text-green-500 font-semibold">correct answer</span>.
         </p>
         <Card>
-          <CardHeader className="items-center">
+          <CardHeader className="items-center justify-center">
             <CardTitle className="text-xl">Performance vs. Problem Complexity</CardTitle>
           </CardHeader>
           <CardContent className="p-2 md:p-4">
@@ -150,7 +150,7 @@ print(roots)
       </section>
 
       {/* 3. Speedup Chart */}
-      <section className="text-center">
+      <section className="text-center justify-center">
         <h2 className="text-3xl font-bold tracking-tighter mb-6">CUDA Makes Accuracy Practical</h2>
         <p className="max-w-3xl mx-auto text-lg text-muted-foreground mb-8">
           PolySolve&lsquo;s CUDA acceleration provides a massive speedup (over 17x at degree 100) compared to its (already fast) Numba-powered CPU implementation. This makes it feasible to solve complex, high-degree polynomials accurately in seconds, not minutes.
