@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DocsPagination } from "@/components/DocsPagination";
 import CodeBlock from "@/components/CodeBlock";
+import { AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function GaOptionsPage() {
   return (
@@ -233,6 +235,24 @@ roots = f.get_real_roots(options=custom_options)`}
                 aggressively. A larger number (e.g., 7) is more precise but may
                 return multiple near-identical roots.
               </p>
+              <Alert variant="destructive" className="!mt-4 ml-4">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Precision Warning</AlertTitle>
+                <AlertDescription className="!mt-2 prose-p:!m-0">
+                  <p>
+                    Values above 15 are not recommended. PolySolve uses
+                    standard 64-bit floats (`float64`), which are limited to
+                    about 15-16 significant digits of precision (machine
+                    epsilon).
+                  </p>
+                  <p className="!mt-2">
+                    Setting <code>root_precision</code> higher than 15
+                    demands an accuracy that is physically impossible for
+                    floating-point math, and the solver will likely find
+                    no roots.
+                  </p>
+                </AlertDescription>
+              </Alert>
               <p className="!mt-2 ml-4 text-sm text-muted-foreground">
                 <strong>Type:</strong> <code>int</code> | <strong>Default:</strong>{" "}
                 <code>5</code>

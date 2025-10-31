@@ -1,4 +1,4 @@
-const PYODIDE_VERSION = "v0.26.1";
+const PYODIDE_VERSION = "v0.29.0";
 importScripts(`https://cdn.jsdelivr.net/pyodide/${PYODIDE_VERSION}/full/pyodide.js`);
 
 async function loadPyodideAndPackages() {
@@ -9,7 +9,7 @@ async function loadPyodideAndPackages() {
   await self.pyodide.loadPackage("micropip");
   await self.pyodide.runPythonAsync(`
     import micropip
-    await micropip.install('polysolve')
+    await micropip.install('polysolve==0.5.1')
   `);
 }
 
@@ -61,6 +61,11 @@ self.onmessage = async (event) => {
 
           # Convert the JavaScript options object to a Python dictionary
           ga_opts_dict = ga_opts_js.to_py()
+
+          # v0.5.1 does not have the new options. We must remove them
+          # before passing them to the GA_Options constructor.
+          ga_opts_dict.pop('selection_percentile', None)
+          ga_opts_dict.pop('blend_alpha', None)
 
           # Create the GA_Options instance by unpacking the dictionary
           ga_opts = GA_Options(**ga_opts_dict)
