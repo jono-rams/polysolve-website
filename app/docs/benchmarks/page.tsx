@@ -48,7 +48,7 @@ def run_suite():
         elite_ratio=0.1,
         crossover_ratio=0.5,
         mutation_ratio=0.4,
-        root_precision=10
+        root_precision=15
     )
 
     for deg in degrees:
