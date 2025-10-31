@@ -9,7 +9,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Balancer } from "react-wrap-balancer";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { HelpCircle } from "lucide-react";
+import { HelpCircle, AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 type PyodideState = "loading" | "ready" | "error";
 
@@ -194,9 +195,9 @@ export default function DemoPage() {
     { name: 'elite_ratio', label: 'Elite Ratio', description: 'The percentage (e.g., 0.05 for 5%) of the best solutions to carry over unchanged.' },
     { name: 'crossover_ratio', label: 'Crossover Ratio', description: 'The percentage (e.g., 0.45 for 45%) of the next generation created by breeding.' },
     { name: 'mutation_ratio', label: 'Mutation Ratio', description: 'The percentage (e.g., 0.40 for 40%) of the next generation created by mutation.' },
-    { name: 'selection_percentile', label: 'Selection Percentile', description: 'Top % of solutions for the crossover parent pool. A larger value (e.g., 0.75) helps find all roots.' },
-    { name: 'blend_alpha', label: 'Blend Alpha (BLX-α)', description: 'Crossover expansion factor. 0.0 = no expansion, 0.5 = 50% expansion. Good for exploration.' },
-    { name: 'root_precision', label: 'Root Precision', description: 'Decimal places to round roots to for clustering unique results.' },
+    { name: 'selection_percentile', label: 'Selection Percentile (v0.6+)', description: 'Top % of solutions for the crossover parent pool. A larger value (e.g., 0.75) helps find all roots.' },
+    { name: 'blend_alpha', label: 'Blend Alpha (BLX-α) (v0.6+)', description: 'Crossover expansion factor. 0.0 = no expansion, 0.5 = 50% expansion. Good for exploration.' },
+    { name: 'root_precision', label: 'Root Precision', description: 'Decimal places to round roots to. Max 15 recommended (float64 limit).' },
   ];
 
   // --- JSX RENDER ---
@@ -211,6 +212,14 @@ export default function DemoPage() {
           )}
         </CardHeader>
         <CardContent className="space-y-4">
+          <Alert variant="default" className="bg-blue-950/50 border-blue-800/60">
+            <AlertCircle className="h-4 w-4 text-blue-400" />
+            <AlertTitle className="text-blue-300">Demo Version Notice</AlertTitle>
+            <AlertDescription>
+              This demo runs <strong>PolySolve v0.5.1</strong>. The latest release (v0.6.0) requires Numba, which is not compatible with in-browser Python (Pyodide).
+              New v0.6.0 tuning options (Selection Percentile and Blend Alpha) are disabled here.
+            </AlertDescription>
+          </Alert>
           <Tabs defaultValue="roots" className="w-full">
             <TabsList className="grid w-full h-auto grid-cols-2 sm:grid-cols-3 md:h-10 md:grid-cols-6">
               <TabsTrigger value="roots">Find Roots</TabsTrigger>
@@ -228,23 +237,27 @@ export default function DemoPage() {
                   <AccordionTrigger>Advanced Genetic Algorithm Options</AccordionTrigger>
                   <AccordionContent>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                      {gaOptionsList.map(opt => (
-                        <div key={opt.name} className="space-y-2">
-                          <Label htmlFor={opt.name} className="flex items-center">
-                            {opt.label}
-                            <TooltipProvider>
-                              <Tooltip>
-                                <TooltipTrigger asChild><HelpCircle className="h-4 w-4 ml-2 text-muted-foreground" /></TooltipTrigger>
-                                <TooltipContent><p>{opt.description}</p></TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
-                          </Label>
-                          <Input id={opt.name} name={opt.name} type="number" value={gaOptions[opt.name]} onChange={handleGaOptionChange} disabled={isButtonDisabled} />
-                        </div>
-                      ))}
+                      {gaOptionsList.map(opt => {
+                        const isDisabled = opt.name === 'selection_percentile' || opt.name === 'blend_alpha' || isButtonDisabled;
+                        return (
+                          <div key={opt.name} className="space-y-2">
+                            <Label htmlFor={opt.name} className="flex items-center">
+                              {opt.label}
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild><HelpCircle className="h-4 w-4 ml-2 text-muted-foreground" /></TooltipTrigger>
+                                  <TooltipContent><p>{opt.description}</p></TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </Label>
+                            <Input id={opt.name} name={opt.name} type="number" value={gaOptions[opt.name]} onChange={handleGaOptionChange} disabled={isButtonDisabled || isDisabled} />
+                          </div>
+                        )
+                      })}
                     </div>
                     <p className="text-xs text-amber-400 pt-4 px-1">
-                      <strong>Note:</strong> Higher root precision requires more intensive GA settings (generations/population) than used in this demo. For best results here, keep precision low (e.g., 2-3).
+                      <strong>Note:</strong> Higher root precision requires more intensive GA settings (generations/population) than used in this demo. Values above 15 are not recommended
+                      due to float64 precision limits. For best results here, keep precision low (e.g., 2-3).
                     </p>
                   </AccordionContent>
                 </AccordionItem>
