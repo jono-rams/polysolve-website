@@ -12,8 +12,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { HelpCircle, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
-type PyodideState = "loading" | "ready" | "error";
-
 type GaOptionKey = "min_range" | "max_range" | "num_of_generations" | "data_size" | "mutation_strength" | "elite_ratio" | "crossover_ratio" | "mutation_ratio" | "selection_percentile" | "blend_alpha" | "root_precision";
 
 type PolynomialInputProps = {
@@ -49,9 +47,9 @@ const PolynomialInput = ({
 
 
 export default function DemoPage() {
-  const [pyodideState, setPyodideState] = useState<PyodideState>("loading");
   const [isCalculating, setIsCalculating] = useState(false);
   const [output, setOutput] = useState("Result will be displayed here.");
+  const [apiError, setApiError] = useState<string | null>(null);
 
   const [coeffs1, setCoeffs1] = useState("2, -3, -5");
   const [coeffs2, setCoeffs2] = useState("1, 1");
@@ -78,18 +76,20 @@ export default function DemoPage() {
   const workerRef = useRef<Worker | null>(null);
 
   useEffect(() => {
-    workerRef.current = new Worker('/pyodide-worker.js');
+    workerRef.current = new Worker('/api-worker.js');
     const onMessage = (event: MessageEvent) => {
       const { type, requestType, payload, id } = event.data;
 
       switch (type) {
         case 'ready':
-          setPyodideState('ready');
-          // Format the initial default values on load
-          workerRef.current?.postMessage({ type: 'format', payload: "2, -3, -5", id: 1 });
-          workerRef.current?.postMessage({ type: 'format', payload: "1, 1", id: 2 });
-          break;
+        // setPyodideState('ready');
+        // // Format the initial default values on load
+        // workerRef.current?.postMessage({ type: 'format', payload: "2, -3, -5", id: 1 });
+        // workerRef.current?.postMessage({ type: 'format', payload: "1, 1", id: 2 });
+        // break;
         case 'result':
+          setApiError(null);
+
           if (requestType === 'format') {
             if (id === 1) setFormattedFunc1(payload);
             if (id === 2) setFormattedFunc2(payload);
@@ -109,7 +109,17 @@ export default function DemoPage() {
           setIsCalculating(false);
           break;
         case 'error':
-          setOutput(`Error: ${payload}`);
+          // Check if it's a connection error
+          if (payload === 'Failed to fetch') {
+            const errorMsg = "API Connection Error: The server is offline or unreachable.";
+            setApiError(errorMsg);
+            setOutput("Calculation failed. API is offline.");
+          } else {
+            // It's a regular calculation error (e.g., bad input)
+            setApiError(null);
+            setOutput(`Error: ${payload}`);
+          }
+
           if (id === 1) setFormattedFunc1("");
           if (id === 2) setFormattedFunc2("");
           setIsCalculating(false);
@@ -123,22 +133,18 @@ export default function DemoPage() {
   // Debounced effect for the first coefficient input
   useEffect(() => {
     const handler = setTimeout(() => {
-      if (pyodideState === 'ready') {
-        workerRef.current?.postMessage({ type: 'format', payload: coeffs1, id: 1 });
-      }
+      workerRef.current?.postMessage({ type: 'format', payload: coeffs1, id: 1 });
     }, 400);
     return () => clearTimeout(handler);
-  }, [coeffs1, pyodideState]);
+  }, [coeffs1]);
 
   // Debounced effect for the second coefficient input
   useEffect(() => {
     const handler = setTimeout(() => {
-      if (pyodideState === 'ready') {
-        workerRef.current?.postMessage({ type: 'format', payload: coeffs2, id: 2 });
-      }
+      workerRef.current?.postMessage({ type: 'format', payload: coeffs2, id: 2 });
     }, 400);
     return () => clearTimeout(handler);
-  }, [coeffs2, pyodideState]);
+  }, [coeffs2]);
 
   // Generic handler for GA option input changes
   const handleGaOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -185,7 +191,7 @@ export default function DemoPage() {
     workerRef.current.postMessage({ type, payload });
   };
 
-  const isButtonDisabled = pyodideState !== "ready" || isCalculating;
+  const isButtonDisabled = isCalculating;
   const gaOptionsList: { name: GaOptionKey; label: string; description: string; }[] = [
     { name: 'min_range', label: 'Min Range', description: 'The minimum value for the initial random solutions.' },
     { name: 'max_range', label: 'Max Range', description: 'The maximum value for the initial random solutions.' },
@@ -195,8 +201,8 @@ export default function DemoPage() {
     { name: 'elite_ratio', label: 'Elite Ratio', description: 'The percentage (e.g., 0.05 for 5%) of the best solutions to carry over unchanged.' },
     { name: 'crossover_ratio', label: 'Crossover Ratio', description: 'The percentage (e.g., 0.45 for 45%) of the next generation created by breeding.' },
     { name: 'mutation_ratio', label: 'Mutation Ratio', description: 'The percentage (e.g., 0.40 for 40%) of the next generation created by mutation.' },
-    { name: 'selection_percentile', label: 'Selection Percentile (v0.6+)', description: 'Top % of solutions for the crossover parent pool. A larger value (e.g., 0.75) helps find all roots.' },
-    { name: 'blend_alpha', label: 'Blend Alpha (BLX-α) (v0.6+)', description: 'Crossover expansion factor. 0.0 = no expansion, 0.5 = 50% expansion. Good for exploration.' },
+    { name: 'selection_percentile', label: 'Selection Percentile', description: 'Top % of solutions for the crossover parent pool. A larger value (e.g., 0.75) helps find all roots.' },
+    { name: 'blend_alpha', label: 'Blend Alpha (BLX-α)', description: 'Crossover expansion factor. 0.0 = no expansion, 0.5 = 50% expansion. Good for exploration.' },
     { name: 'root_precision', label: 'Root Precision', description: 'Decimal places to round roots to. Max 15 recommended (float64 limit).' },
   ];
 
@@ -207,19 +213,25 @@ export default function DemoPage() {
       <Card>
         <CardHeader>
           <CardTitle>PolySolve Playground</CardTitle>
-          {pyodideState === 'loading' && (
-            <p className="text-sm text-amber-400">Initializing Python environment... This may take a moment.</p>
-          )}
         </CardHeader>
         <CardContent className="space-y-4">
-          <Alert variant="default" className="bg-blue-950/50 border-blue-800/60">
+          {apiError && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Server Error</AlertTitle>
+              <AlertDescription>
+                {apiError}
+              </AlertDescription>
+            </Alert>
+          )}
+          {/* <Alert variant="default" className="bg-blue-950/50 border-blue-800/60">
             <AlertCircle className="h-4 w-4 text-blue-400" />
             <AlertTitle className="text-blue-300">Demo Version Notice</AlertTitle>
             <AlertDescription>
               This demo runs <strong>PolySolve v0.5.1</strong>. The latest release (v0.6.0) requires Numba, which is not compatible with in-browser Python (Pyodide).
               New v0.6.0 tuning options (Selection Percentile and Blend Alpha) are disabled here.
             </AlertDescription>
-          </Alert>
+          </Alert> */}
           <Tabs defaultValue="roots" className="w-full">
             <TabsList className="grid w-full h-auto grid-cols-2 sm:grid-cols-3 md:h-10 md:grid-cols-6">
               <TabsTrigger value="roots">Find Roots</TabsTrigger>
@@ -238,7 +250,7 @@ export default function DemoPage() {
                   <AccordionContent>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
                       {gaOptionsList.map(opt => {
-                        const isDisabled = opt.name === 'selection_percentile' || opt.name === 'blend_alpha' || isButtonDisabled;
+                        const isDisabled = isButtonDisabled;
                         return (
                           <div key={opt.name} className="space-y-2">
                             <Label htmlFor={opt.name} className="flex items-center">
