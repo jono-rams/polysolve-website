@@ -73,8 +73,8 @@ roots = f.get_real_roots(options=custom_options)`}
               </p>
               <p className="!mt-2 ml-4 text-sm text-muted-foreground">
                 <strong>Type:</strong> <code>float</code> |{" "}
-                <strong>Default:</strong> <code>-100.0</code> /{" "}
-                <code>100.0</code>
+                <strong>Default:</strong> <code>0.0</code> /{" "}
+                <code>0.0</code>
               </p>
             </li>
 

@@ -60,8 +60,8 @@ export default function DemoPage() {
   const [formattedFunc2, setFormattedFunc2] = useState("");
 
   const [gaOptions, setGaOptions] = useState({
-    min_range: "-100.0",
-    max_range: "100.0",
+    min_range: "0.0",
+    max_range: "0.0",
     num_of_generations: "10",
     data_size: "10000",
     mutation_strength: "0.01",
@@ -193,8 +193,8 @@ export default function DemoPage() {
 
   const isButtonDisabled = isCalculating;
   const gaOptionsList: { name: GaOptionKey; label: string; description: string; }[] = [
-    { name: 'min_range', label: 'Min Range', description: 'The minimum value for the initial random solutions.' },
-    { name: 'max_range', label: 'Max Range', description: 'The maximum value for the initial random solutions.' },
+    { name: 'min_range', label: 'Min Range', description: 'The minimum value for the initial random solutions. Recommended to leave this as the default value.' },
+    { name: 'max_range', label: 'Max Range', description: 'The maximum value for the initial random solutions. Recommended to leave this as the default value.' },
     { name: 'num_of_generations', label: 'Generations', description: 'The number of iterations the algorithm will run.' },
     { name: 'data_size', label: 'Data Size (Population)', description: 'The total number of solutions generated in each generation.' },
     { name: 'mutation_strength', label: 'Mutation Strength', description: 'The percentage (e.g., 0.01 for 1%) by which a solution is mutated.' },
