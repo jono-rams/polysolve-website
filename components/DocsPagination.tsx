@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { docsSections } from "@/lib/docs-navigation";
+import { buildDocsHref, parseDocsPathname } from "@/lib/docs-versions";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export function DocsPagination() {
   const pathname = usePathname();
-  const currentIndex = docsSections.findIndex((section) => section.href === pathname);
+  const { version, slug } = parseDocsPathname(pathname);
+  const currentIndex = docsSections.findIndex((section) => section.slug === slug);
 
   if (currentIndex === -1) {
     return null;
@@ -21,7 +23,7 @@ export function DocsPagination() {
     <div className="mt-12 flex items-center justify-between">
       <div>
         {prevSection && (
-          <Link href={prevSection.href}>
+          <Link href={buildDocsHref(version, prevSection.slug)}>
             <Button variant="outline">
               <ChevronLeft className="mr-2 h-4 w-4" />
               {prevSection.title}
@@ -31,7 +33,7 @@ export function DocsPagination() {
       </div>
       <div>
         {nextSection && (
-          <Link href={nextSection.href}>
+          <Link href={buildDocsHref(version, nextSection.slug)}>
             <Button variant="outline">
               {nextSection.title}
               <ChevronRight className="ml-2 h-4 w-4" />
