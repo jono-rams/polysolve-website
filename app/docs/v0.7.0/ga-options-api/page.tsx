@@ -79,7 +79,7 @@ roots = f.get_real_roots(options=custom_options)`}
                 <AlertDescription className="!mt-2 prose-p:!m-0">
                   <p>
                     In Polysolve v0.7.0 the <code>min_range</code> and <code>max_range</code> parameters are deprecated and
-                    no longer used. Cauchy's method is used to automatically find a
+                    no longer used. Cauchy&lsquo;s method is used to automatically find a
                     range that is likely to contain all roots.
                   </p>
                 </AlertDescription>
