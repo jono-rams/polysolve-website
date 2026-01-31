@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ShieldCheck, Cpu, Gauge, Zap, AlertTriangle } from "lucide-react";
+import { ShieldCheck, Cpu, Gauge, Zap, AlertTriangle, Infinity } from "lucide-react";
 
 import CodeBlock from "@/components/CodeBlock";
 
@@ -28,12 +28,17 @@ export default function Home() {
       title: "Intuitive API",
       description: "Use natural Python operators (+, -, *) to perform polynomial calculus and arithmetic effortlessly.",
     },
+    {
+      icon: <Infinity className="h-8 w-8 text-primary" />,
+      title: "Complex Number Support",
+      description: "Find real AND complex roots with ease. PolySolve v0.7.0 allows you to search the entire complex plane.",
+    },
   ];
 
   return (
     <div className="space-y-16 md:space-y-20">
       <section className="text-center">
-        <div style={{display: "flex", justifyContent: "center"}}>
+        <div style={{ display: "flex", justifyContent: "center" }}>
           <Image src="/PolySolve-Logo.png" alt='PolySolve Logo' width={256} height={256} className='h-auto w-auto' ></Image>
         </div>
         <h1 className="text-4xl md:text-5xl font-bold tracking-tighter my-3 py-2">
@@ -57,7 +62,7 @@ export default function Home() {
         <h2 className="text-3xl font-bold tracking-tighter text-center mb-6">
           Get Started in 30 Seconds
         </h2>
-        
+
         <CodeBlock language='python'>
           {`
 import polysolve
@@ -69,9 +74,13 @@ f1.set_coeffs([2, -3, -5])
 # Find the approximate real roots using the
 # fast, Numba-accelerated CPU solver.
 roots = f1.get_real_roots()
-print(roots)
-# Expected accurate output: [-1. 2.5] (after clustering)
-  `}
+print(f"Real Roots: {roots}")
+# Expected output: [-1. 2.5] (after clustering)
+
+# v0.7.0 Update: Find all roots (real and complex)
+exact_roots = f1.get_roots(options={"find_complex": True})
+print(f"All Roots: {exact_roots}")
+# Expected output: [-1.+0.j  2.5+0.j]`}
         </CodeBlock>
       </section>
 
@@ -88,8 +97,11 @@ print(roots)
 
       <section>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {features.map((feature) => (
-            <Card key={feature.title}>
+          {features.map((feature, index) => (
+            <Card
+              key={feature.title}
+              className={index === features.length - 1 ? "md:col-span-2 md:w-3/4 md:mx-auto" : ""}
+            >
               <CardHeader className="flex flex-row items-center gap-4">
                 {feature.icon}
                 <CardTitle>{feature.title}</CardTitle>
@@ -110,17 +122,17 @@ print(roots)
         </p>
         <Card>
           <CardHeader className="items-center justify-center">
-              <CardTitle className="text-xl flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5 text-red-500"/>
-                NumPy Instability vs. PolySolve Stability
-              </CardTitle>
+            <CardTitle className="text-xl flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-red-500" />
+              NumPy Instability vs. PolySolve Stability
+            </CardTitle>
           </CardHeader>
           <CardContent className="p-2 md:p-4">
-            <Image 
+            <Image
               src="/benchmark-accuracy-chart.png"
-              alt="PolySolve Benchmark: Accuracy (MAE) vs NumPy" 
-              width={1000} 
-              height={600} 
+              alt="PolySolve Benchmark: Accuracy (MAE) vs NumPy"
+              width={1000}
+              height={600}
               className="w-full h-auto rounded-md object-contain"
             />
           </CardContent>
@@ -138,11 +150,11 @@ print(roots)
             <CardTitle className="text-xl">Performance vs. Problem Complexity</CardTitle>
           </CardHeader>
           <CardContent className="p-2 md:p-4">
-            <Image 
+            <Image
               src="/benchmark-speed-chart.png"
-              alt="PolySolve Benchmark: Speed Comparison" 
-              width={1000} 
-              height={600} 
+              alt="PolySolve Benchmark: Speed Comparison"
+              width={1000}
+              height={600}
               className="w-full h-auto rounded-md object-contain"
             />
           </CardContent>
@@ -153,18 +165,18 @@ print(roots)
       <section className="text-center justify-center">
         <h2 className="text-3xl font-bold tracking-tighter mb-6">CUDA Makes Accuracy Practical</h2>
         <p className="max-w-3xl mx-auto text-lg text-muted-foreground mb-8">
-          PolySolve&lsquo;s CUDA acceleration provides a massive speedup (over 17x at degree 100) compared to its (already fast) Numba-powered CPU implementation. This makes it feasible to solve complex, high-degree polynomials accurately in seconds, not minutes.
+          PolySolve&lsquo;s CUDA acceleration provides a massive speedup (over 15x at degree 100) compared to its (already fast) Numba-powered CPU implementation. This makes it feasible to solve complex, high-degree polynomials accurately in seconds, not minutes.
         </p>
         <Card>
           <CardHeader className="items-center">
             <CardTitle className="text-xl">PolySolve GPU vs. CPU Speedup</CardTitle>
           </CardHeader>
           <CardContent className="p-2 md:p-4">
-            <Image 
+            <Image
               src="/benchmark-speedup-chart.png"
-              alt="PolySolve Benchmark: GPU Speedup Factor" 
-              width={1000} 
-              height={600} 
+              alt="PolySolve Benchmark: GPU Speedup Factor"
+              width={1000}
+              height={600}
               className="w-full h-auto rounded-md object-contain"
             />
           </CardContent>
@@ -174,10 +186,10 @@ print(roots)
       {/* Benchmark Notes */}
       <section className="text-center">
         <p className="max-w-4xl mx-auto text-sm text-muted-foreground">
-          <strong>Benchmark Notes:</strong> The charts above compare PolySolve (v0.6.0) against NumPy on randomly generated polynomials of varying degrees. PolySolve&lsquo;s Genetic Algorithm was configured for high accuracy using these options: <code>num_of_generations=150</code>, <code>data_size=1000000</code>, and other tuning parameters. For full benchmark details and code, see the <Link href="/docs/benchmarks" className="text-primary underline">Documentation</Link>.
+          <strong>Benchmark Notes:</strong> The charts above compare PolySolve (v0.7.0) against NumPy on randomly generated polynomials of varying degrees. PolySolve&lsquo;s Genetic Algorithm was configured for high accuracy using these options: <code>num_of_generations=20</code>, <code>data_size=500000</code>, and other tuning parameters. For full benchmark details and code, see the <Link href="/docs/benchmarks" className="text-primary underline">Documentation</Link>.
         </p>
       </section>
-      
+
     </div>
   );
 }

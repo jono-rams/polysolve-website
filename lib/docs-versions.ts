@@ -3,11 +3,12 @@ export const DOC_VERSIONS = [
   "v0.6.1",
   "v0.6.2",
   "v0.6.3",
+  "v0.7.0",
 ] as const;
 
 export type DocsVersion = (typeof DOC_VERSIONS)[number];
 
-export const DEFAULT_DOCS_VERSION: DocsVersion = "v0.6.3";
+export const DEFAULT_DOCS_VERSION: DocsVersion = "v0.7.0";
 
 export function isDocsVersion(value: string): value is DocsVersion {
   return (DOC_VERSIONS as readonly string[]).includes(value);
