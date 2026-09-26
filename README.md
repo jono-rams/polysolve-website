@@ -12,6 +12,7 @@ A Python library for representing, manipulating, and solving polynomial equation
 ## Key Features
 
 * **Numerically Stable Solver**: Makes complex calculations **practical**. Leverage your GPU to power the robust genetic algorithm, solving high-degree polynomials accurately in a reasonable timeframe.
+* **Complex Number Support**: PolySolve v0.7.0+ fully supports complex coefficients and finding roots in the complex plane (e.g., $x^2 + 1 = 0 \to \pm i$).
 * **Numba Accelerated CPU Solver**: The default genetic algorithm is JIT-compiled with Numba for high-speed CPU performance, right out of the box.
 * **CUDA Accelerated**: Leverage NVIDIA GPUs for a massive performance boost when finding roots in large solution spaces.
 * **Create and Manipulate Polynomials**: Easily define polynomials of any degree using integer or float coefficients, and perform arithmetic operations like addition, subtraction, multiplication, and scaling.
