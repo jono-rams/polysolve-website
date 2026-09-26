@@ -31,7 +31,7 @@ export default function Home() {
     {
       icon: <Infinity className="h-8 w-8 text-primary" />,
       title: "Complex Number Support",
-      description: "Find real AND complex roots with ease. PolySolve v0.7.0 allows you to search the entire complex plane.",
+      description: "Find real AND complex roots with ease. PolySolve v0.7.0+ allows you to search the entire complex plane.",
     },
   ];
 
